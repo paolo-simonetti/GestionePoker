@@ -13,7 +13,7 @@ public interface RuoloUtenteRepository extends CrudRepository<RuoloUtente, Long>
 	
 	Set<RuoloUtente> findAllByUtenti_username(String username);
 	
-	@Query("from RuoloUtente r join fetch r.utenti where r.nomeRuolo like ?1")
+	@Query("from RuoloUtente r left join fetch r.utenti u where r.nomeRuolo like ?1")
 	RuoloUtente findByNomeRuoloWithUtenti(NomeRuolo nomeRuolo);
 	
 	

@@ -13,7 +13,9 @@
       	  </li>
      	  
      	  <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Benvenuto, ${sessionScope.utenteIdentificato.nome} ${sessionScope.utenteIdentificato.cognome} </a>
+          <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          	Benvenuto, ${sessionScope.utenteIdentificato.nome} ${sessionScope.utenteIdentificato.cognome} 
+          </a>
           <div class="dropdown-menu" aria-labelledby="dropdown03">
           <a class="dropdown-item" href="${pageContext.request.contextPath}/registrazioneAccesso/LogoutServlet">Logout</a>
           </div>

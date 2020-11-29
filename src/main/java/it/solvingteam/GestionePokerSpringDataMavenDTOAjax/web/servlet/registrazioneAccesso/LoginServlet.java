@@ -86,6 +86,7 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session=request.getSession(true);
 			session.setAttribute("utenteIdentificato",utenteService
 					.trovaTramiteIdConInformazioniComplete(utenteIdentificato.getIdUtente()));
+
 			// Non è necessario, perché sono info che ho già dall'utente che ho messo in sessione,
 			// ma è comodo salvare in sessione dei booleani che verifichino se l'utente ha un certo ruolo
 			boolean isAdmin=false;

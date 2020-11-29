@@ -20,15 +20,15 @@ public interface UtenteRepository extends CrudRepository<Utente, Long>, QueryByE
 	Set<Utente> findAllByNomeAndCognome(String nome, String cognome);
 	Utente findByTavoliCreati_IdTavolo(Long idTavolo);
 	
-	@Query("from Utente u join fetch u.ruoli where u.idUtente = ?1")
+	@Query("from Utente u left join fetch u.ruoli r where u.idUtente = ?1")
 	Utente findByIdWithRuoli(Long idUtente);
 	
-	@Query("from Utente u join fetch u.tavoloDiGioco where u.idUtente = ?1")
+	@Query("from Utente u left join fetch u.tavoloDiGioco t where u.idUtente = ?1")
 	Utente findByIdWithTavoloDiGioco(Long idUtente);
 	
-	@Query("from Utente u join fetch u.tavoliCreati where u.idUtente = ?1")
+	@Query("from Utente u left join fetch u.tavoliCreati t where u.idUtente = ?1")
 	Utente findByIdWithTavoliCreati(Long idUtente);
 	
-	@Query("from Utente u join fetch u.tavoliCreati join fetch u.tavoloDiGioco join fetch u.ruoli where idUtente=?1")
+	@Query("select u from Utente u left join fetch u.tavoliCreati tc left join fetch u.tavoloDiGioco tg left join fetch u.ruoli r where u.idUtente = ?1")
 	Utente findByIdWithCompleteInfo(Long idUtente);
 }
