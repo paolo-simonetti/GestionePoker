@@ -100,7 +100,7 @@ public class RuoloUtente implements Comparable<RuoloUtente> {
 
 	@Override
 	public String toString() {
-		return "RuoloUtente [descrizioneRuolo=" + descrizioneRuolo + "]";
+		return descrizioneRuolo;
 	}
 
 	@Override

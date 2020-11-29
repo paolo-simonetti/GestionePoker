@@ -1,6 +1,7 @@
 package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,7 +12,7 @@ import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
 
 public class UtenteDTO implements AbstractDTO<Utente> {
 // Usare il design factory per i costruttori
-//TODO: sistemare login e registrazione servlets con i DTO
+
 //TODO: scrivere una validazione a parte per le ricerche (LocalDate.parse(), Integer.parseInt())	
 	private Long idUtente;
 	private String nome;
@@ -95,7 +96,7 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 	public void setStatoUtente(String statoUtente) {
 		this.statoUtente = statoUtente;
 	}
-
+	
 	@Override
 	public Set<String> errors() {
 		/* non invoco questo metodo nelle pagine dedicate alle funzioni di ricerca
@@ -124,6 +125,39 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		return result;
 	}
 	
+	public Set<String> errorRicerca() {
+		Set<String> result=new TreeSet<>();
+		if(!StringUtils.isBlank(this.dataRegistrazione)) {
+			try {
+				LocalDate.parse(this.dataRegistrazione);
+			} catch(DateTimeParseException e) {
+				e.printStackTrace();
+				result.add("Data inserita non valida!");
+			}
+		}
+		
+		if (!StringUtils.isBlank(this.esperienzaAccumulata)) {
+			try {
+				Integer.parseInt(this.esperienzaAccumulata);
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("L'esperienza accumulata è un numero intero!");
+			}
+		}
+		
+		if (!StringUtils.isBlank(this.creditoDisponibile)) {
+			try {
+				Integer.parseInt(this.creditoDisponibile);
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("Il credito disponibile è un numero intero!");
+			}
+		}
+		
+		return result;
+	}
+
+	
 	@Override
 	public String errorId(String idUtente) {
 		String result=null;
@@ -140,6 +174,7 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		
 		return result;
 	}
+
 
 	@Override
 	public Utente buildModelFromDTO() {
