@@ -2,7 +2,7 @@ package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.service;
 
 import java.util.Set;
 
-import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.RuoloUtente;
+
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.StatoUtente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
@@ -21,7 +21,7 @@ public interface UtenteService {
 
 	public Set<Utente> findByExample(Utente example);
 	
-	public Set<Utente> trovaTuttiTramiteRuoli(RuoloUtente ruoloUtente);
+	public Set<Utente> trovaTuttiTramiteRuoli(String descrizioneRuoloUtente);
 	
 	public Set<Utente> trovaTuttiTramiteStatoUtente(StatoUtente statoUtente);
 	

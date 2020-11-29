@@ -27,7 +27,7 @@
 	  <div class="jumbotron" >
 	    <div class="container">
 	    
-			<div class="alert alert-success alert-dismissible fade show ${successMessage==null?'d-none': ''}" role="alert">
+		<div class="alert alert-success alert-dismissible fade show ${successMessage==null?'d-none': ''}" role="alert">
 		  ${successMessage}
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
@@ -41,7 +41,12 @@
 		</div>
 		
 	      <h1 class="display-3">Benvenuto nel fantastico casinò di Pagliare del Tronto!</h1>
-	      <p>Cosa vuoi fare oggi?</p>
+	      <h3>Cosa vuoi fare oggi?</h3>
+	      <c:if test="${sessionScope.isAdmin eq 'true'}">
+	        <p><a class="btn btn-primary btn-lg" 
+	      	  href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/SchermataGeneraleServlet" role="button">
+	      	    Vai alla gestione degli utenti &raquo;</a></p>
+	      </c:if>
 	    </div>
 	  </div>
 	  

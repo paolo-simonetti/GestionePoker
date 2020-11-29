@@ -16,6 +16,8 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 	private String dataCreazione;
 	private String esperienzaMinimaRichiesta;
 	private String puntataMinima;
+	private String usernameCreatore;
+	private Set<String> usernameGiocatori = new TreeSet<>();
 	
 	public Long getIdTavolo() {
 		return idTavolo;
@@ -57,6 +59,18 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 		this.puntataMinima = puntataMinima;
 	}
 
+	public String getUsernameCreatore() {
+		return usernameCreatore;
+	}
+
+	public void setUsernameCreatore(String usernameCreatore) {
+		this.usernameCreatore = usernameCreatore;
+	}
+
+	public Set<String> getUsernameGiocatori() {
+		return usernameGiocatori;
+	}
+
 	@Override
 	public Set<String> errors() {
 		Set<String> result = new TreeSet<String>();
@@ -82,6 +96,8 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 				result.add("Il campo Puntata minima deve essere un numero");
 			}
 		}
+		if(StringUtils.isBlank(this.usernameCreatore))
+			result.add("Il campo Creatore non può essere vuoto");
 		return result;
 	}
 
@@ -120,6 +136,8 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 		this.setDataCreazione(tavoloInstance.getDataCreazione().toString());
 		this.setEsperienzaMinimaRichiesta(tavoloInstance.getEsperienzaMinimaRichiesta().toString());
 		this.setPuntataMinima(tavoloInstance.getPuntataMinima().toString());
+		this.setUsernameCreatore(tavoloInstance.getCreatore().getUsername());
+		tavoloInstance.getGiocatori().stream().forEach(giocatore->this.getUsernameGiocatori().add(giocatore.getUsername()));
 	}
 
 }

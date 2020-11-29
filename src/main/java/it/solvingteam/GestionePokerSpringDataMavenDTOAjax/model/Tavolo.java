@@ -35,11 +35,12 @@ public class Tavolo implements Comparable<Tavolo> {
 	
 	public Tavolo() {} // mi serve quando uso il DTO nelle ricerche 
 	
-	public Tavolo(String denominazione, Integer esperienzaMinimaRichiesta, Utente creatore) {
+	public Tavolo(String denominazione, Integer esperienzaMinimaRichiesta, Integer puntataMinima, Utente creatore) {
 		super();
 		this.denominazione = denominazione;
 		this.dataCreazione = LocalDate.now();
 		this.esperienzaMinimaRichiesta = esperienzaMinimaRichiesta;
+		this.puntataMinima=puntataMinima;
 		this.creatore = creatore;
 	}
 
@@ -112,9 +113,11 @@ public class Tavolo implements Comparable<Tavolo> {
 		result = prime * result + ((dataCreazione == null) ? 0 : dataCreazione.hashCode());
 		result = prime * result + ((denominazione == null) ? 0 : denominazione.hashCode());
 		result = prime * result + ((esperienzaMinimaRichiesta == null) ? 0 : esperienzaMinimaRichiesta.hashCode());
+		result = prime * result + ((puntataMinima == null) ? 0 : puntataMinima.hashCode());
 		return result;
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -144,13 +147,21 @@ public class Tavolo implements Comparable<Tavolo> {
 				return false;
 		} else if (!esperienzaMinimaRichiesta.equals(other.esperienzaMinimaRichiesta))
 			return false;
+		if (puntataMinima == null) {
+			if (other.puntataMinima != null)
+				return false;
+		} else if (!puntataMinima.equals(other.puntataMinima))
+			return false;
 		return true;
 	}
+
+	
 
 	@Override
 	public String toString() {
 		return "Tavolo [idTavolo=" + idTavolo + ", denominazione=" + denominazione + ", dataCreazione=" + dataCreazione
-				+ ", esperienzaMinimaRichiesta=" + esperienzaMinimaRichiesta + ", creatore=" + creatore + "]";
+				+ ", esperienzaMinimaRichiesta=" + esperienzaMinimaRichiesta + ", puntataMinima=" + puntataMinima
+				+ ", creatore=" + creatore + "]";
 	}
 
 	@Override

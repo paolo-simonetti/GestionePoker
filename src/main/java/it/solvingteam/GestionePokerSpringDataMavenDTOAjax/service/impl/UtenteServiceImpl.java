@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.RuoloUtente;
+
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.StatoUtente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
@@ -100,8 +100,8 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Set<Utente> trovaTuttiTramiteRuoli(RuoloUtente ruoloUtente) {
-		return utenteRepository.findAllByRuoli(ruoloUtente);
+	public Set<Utente> trovaTuttiTramiteRuoli(String descrizioneRuoloUtente) {
+		return utenteRepository.findAllByRuoli(descrizioneRuoloUtente);
 	}
 
 	@Override

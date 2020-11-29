@@ -6,14 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
-import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.RuoloUtente;
+
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.StatoUtente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
 
 public interface UtenteRepository extends CrudRepository<Utente, Long>, QueryByExampleExecutor<Utente> {
 	
-	Set<Utente> findAllByRuoli(RuoloUtente ruoloUtente);
+	@Query("from Utente u left join fetch u.ruoli r where r.descrizioneRuolo like ?1")
+	Set<Utente> findAllByRuoli(String  descrizioneRuoloUtente);
+	
 	Set<Utente> findAllByStatoUtente(StatoUtente statoUtente);
 	Set<Utente> findAllByTavoloDiGioco(Tavolo tavoloDiGioco);
 	Utente findByUsername(String username);
