@@ -1,5 +1,6 @@
 package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
+
+
+
 @Entity
 @Table(name="utente")
 public class Utente implements Comparable<Utente> {
@@ -29,7 +34,10 @@ public class Utente implements Comparable<Utente> {
 	private String cognome;
 	private String username;
 	private String password;
+	
+
 	private LocalDate dataRegistrazione;
+	
 	private Integer esperienzaAccumulata;
 	private Integer creditoDisponibile;
 	
@@ -56,7 +64,7 @@ public class Utente implements Comparable<Utente> {
 		this.cognome = cognome;
 		this.username = username;
 		this.password = password;
-		this.dataRegistrazione = LocalDate.now();
+		this.dataRegistrazione = LocalDate.now(Clock.systemUTC());
 		this.esperienzaAccumulata=0;
 		this.creditoDisponibile=0;
 	}

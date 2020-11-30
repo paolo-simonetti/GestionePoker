@@ -71,10 +71,13 @@ public class ExecuteRicercaUtentiServlet extends HttpServlet {
 		Set<Utente> listaUtenti=utenteService.findByExample(utenteDaCercare);
 		
 		// Porto i risultati in pagina
-		request.setAttribute("successMessage","Ricerca eseguita con successo");
 		request.setAttribute("listaUtenti",listaUtenti);
-		request.setAttribute("risultatoRicercaPerGet",utenteDTO.generaRisultatoRicercaPerGet(listaUtenti));
-		System.out.println(utenteDTO.generaRisultatoRicercaPerGet(listaUtenti));
+		if(!listaUtenti.isEmpty()) {
+			request.setAttribute("risultatoRicercaUtentePerGet",utenteDTO.generaRisultatoRicercaPerGet(listaUtenti));
+			request.setAttribute("successMessage","Ricerca eseguita con successo");			
+		} else {
+			request.setAttribute("errorMessage","Non è stato trovato alcun risultato");
+		}
 		request.getServletContext()
 			.getRequestDispatcher("/jsp/gestioneAmministrazione/ricerca/risultatiRicercaUtenti.jsp")
 				.forward(request,response);

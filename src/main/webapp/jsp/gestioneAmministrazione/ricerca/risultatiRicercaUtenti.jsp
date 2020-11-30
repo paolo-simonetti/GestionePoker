@@ -76,7 +76,7 @@
 		                     
 	               				<td>
 								  <a class="btn  btn-sm btn-outline-secondary" 
-								  	href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/visualizzazioneUtente/VisualizzazioneUtenteServlet?${requestScope.risultatoRicercaUtentePerGet}idUtenteDaVisualizzare=${item.idUtente}&paginaDiProvenienza=risultatiRicercaUtenti">
+								  	href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/visualizzazioneUtente/VisualizzazioneUtenteServlet?${requestScope.risultatoRicercaUtentePerGet}idUtenteDaVisualizzare=${item.idUtente}">
 									Visualizza utente
 								  </a>
 								  <a class="btn  btn-sm btn-outline-primary ml-2 mr-2" 

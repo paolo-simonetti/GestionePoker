@@ -1,6 +1,7 @@
 package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.web.servlet.accessoEffettuato.gestioneAmministrazione.ricerca;
 
 import java.io.IOException;
+import java.util.Set;
 
 
 import javax.servlet.ServletConfig;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-
+import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.RuoloUtente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.StatoUtente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.service.RuoloUtenteService;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.service.TavoloService;
@@ -42,7 +43,11 @@ public class PrepareRicercaUtentiServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		/* Ho scelto di portare informazioni sui tavoli: l'admin qui cerca tutti i tavoli presenti;
 		 * nella sezione GestioneTavoli, cercherà solo quelli che ha creato */
-		request.setAttribute("listaRuoli",ruoloUtenteService.elenca());
+		Set<RuoloUtente> listaRuoli=ruoloUtenteService.elenca();
+		// Devo cercare anche gli utenti che ancora non hanno un ruolo, cioé quelli appena registrati,
+		//altrimenti non posso mai assegnarlo!
+		listaRuoli.add(null);
+		request.setAttribute("listaRuoli",listaRuoli);
 		request.setAttribute("listaStati",StatoUtente.conversioneStatoUtente.values());
 		/* recupero la lista dei tavoli; per ora, non mi serve l'informazione sui loro creatori,  
 		 * la prendo nell'executeRicerca */

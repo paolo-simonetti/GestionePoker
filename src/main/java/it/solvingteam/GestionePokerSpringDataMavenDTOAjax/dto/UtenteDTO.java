@@ -176,11 +176,11 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 	}
 
 	public String generaRisultatoRicercaPerGet(Set<Utente> risultatoRicercaUtenti) {
-		String markerIniziale="risultatoRicercaPerGet=";
+		String markerIniziale="risultatoRicercaUtentePerGet=";
 		String markerDiMezzo="&"+markerIniziale;
 		String result=markerIniziale+
 				risultatoRicercaUtenti.stream().map(utente-> utente.getIdUtente().toString())
-				.reduce((id1,id2)->id1+markerDiMezzo+id2).get();	
+				.reduce((id1,id2)->id1+markerDiMezzo+id2+"&").get();	
 		return result;
 	}
 	
