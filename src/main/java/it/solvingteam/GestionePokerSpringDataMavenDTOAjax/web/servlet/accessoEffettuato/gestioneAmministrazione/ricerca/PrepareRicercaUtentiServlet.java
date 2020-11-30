@@ -2,6 +2,7 @@ package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.web.servlet.accessoEf
 
 import java.io.IOException;
 
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.StatoUtente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.service.RuoloUtenteService;
+import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.service.TavoloService;
 
 
 @WebServlet("/accessoEffettuato/gestioneAmministrazione/ricerca/PrepareRicercaUtentiServlet")
@@ -23,6 +26,9 @@ public class PrepareRicercaUtentiServlet extends HttpServlet {
 	@Autowired
 	private RuoloUtenteService ruoloUtenteService;
   
+	@Autowired
+	private TavoloService tavoloService;
+	
     public PrepareRicercaUtentiServlet() {
         super();    
     }
@@ -34,8 +40,13 @@ public class PrepareRicercaUtentiServlet extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		/* Ho scelto di portare informazioni sui tavoli: l'admin qui cerca tutti i tavoli presenti;
+		 * nella sezione GestioneTavoli, cercherà solo quelli che ha creato */
 		request.setAttribute("listaRuoli",ruoloUtenteService.elenca());
 		request.setAttribute("listaStati",StatoUtente.conversioneStatoUtente.values());
+		/* recupero la lista dei tavoli; per ora, non mi serve l'informazione sui loro creatori,  
+		 * la prendo nell'executeRicerca */
+		request.setAttribute("listaTavoli", tavoloService.elenca());
 		request.getServletContext().getRequestDispatcher("/jsp/gestioneAmministrazione/ricerca/ricercaUtenti.jsp").forward(request,response);
 	}
 

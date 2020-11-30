@@ -166,6 +166,15 @@ public class Utente implements Comparable<Utente> {
 			return false;
 		}
 	}
+	
+
+	public Tavolo getTavoloDiGioco() {
+		return tavoloDiGioco;
+	}
+
+	public void setTavoloDiGioco(Tavolo tavoloDiGioco) {
+		this.tavoloDiGioco = tavoloDiGioco;
+	}
 
 	@Override
 	public int hashCode() {

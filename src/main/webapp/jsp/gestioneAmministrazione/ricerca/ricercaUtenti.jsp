@@ -17,9 +17,17 @@
 	<main role="main" class="container">
 	
 		
-		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': 
-		''}" role="alert">
-		  ${errorMessage}
+		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': ''}" role="alert">
+		  <table class='table table-striped ' >
+		  	<thead>
+		  		<tr><th> Ricerca non riuscita: </th></tr>
+		  	</thead>
+		  	<tbody>
+		  	<c:forEach items="${errorMessage}" var="item">
+		  		<tr><td> ${item} </td></tr>
+		  	</c:forEach>
+		  	</tbody>
+		  </table>
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>
@@ -76,6 +84,18 @@
      			    <c:forEach items="${requestScope.listaStati}" var="statoPossibile">
     			    <option value="${statoPossibile}">
     			      ${statoPossibile}
+    			    </option>
+    			    </c:forEach>
+  				  </select>
+				  </div>
+				  
+				  
+				  <div class="form-group">
+  				  <label for="selectTavolo">Tavolo:</label>
+  				  <select class="form-control" id="selectTavolo" name="tavolo">
+     			    <c:forEach items="${requestScope.listaTavoli}" var="tavoloDisponibile">
+    			    <option value="${tavoloDisponibile.idTavolo}" disabled>
+    			      ${tavoloDisponibile}
     			    </option>
     			    </c:forEach>
   				  </select>

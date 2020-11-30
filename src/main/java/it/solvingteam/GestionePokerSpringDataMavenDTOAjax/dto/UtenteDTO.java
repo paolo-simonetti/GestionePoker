@@ -175,7 +175,16 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		return result;
 	}
 
-
+	public String generaRisultatoRicercaPerGet(Set<Utente> risultatoRicercaUtenti) {
+		String markerIniziale="risultatoRicercaPerGet=";
+		String markerDiMezzo="&"+markerIniziale;
+		String result=markerIniziale+
+				risultatoRicercaUtenti.stream().map(utente-> utente.getIdUtente().toString())
+				.reduce((id1,id2)->id1+markerDiMezzo+id2).get();	
+		return result;
+	}
+	
+	
 	@Override
 	public Utente buildModelFromDTO() {
 		Utente result = new Utente();
@@ -184,7 +193,9 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		result.setCognome(cognome);
 		result.setUsername(username);
 		result.setPassword(password);
-		result.setDataRegistrazione(LocalDate.parse(dataRegistrazione));
+		if(!StringUtils.isBlank(dataRegistrazione)) {
+			result.setDataRegistrazione(LocalDate.parse(dataRegistrazione));			
+		}
 		if(!StringUtils.isBlank(esperienzaAccumulata)) {
 			result.setEsperienzaAccumulata(Integer.parseInt(esperienzaAccumulata));
 		} 
@@ -205,6 +216,9 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		this.setUsername(utenteInstance.getUsername());
 		this.setPassword(utenteInstance.getPassword());
 		this.setStatoUtente(utenteInstance.getStatoUtente().toString());
+		if (utenteInstance.getDataRegistrazione()!=null) {
+			this.setDataRegistrazione(utenteInstance.getDataRegistrazione().toString());
+		}
 	}
 
 }
