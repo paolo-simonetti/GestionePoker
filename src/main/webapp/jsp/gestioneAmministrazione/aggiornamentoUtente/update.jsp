@@ -24,7 +24,6 @@
 		  </button>
 		</div>
 		
-		
 		<div class='card'>
 		    <div class='card-header'>
 		        <h5>Aggiorna i dati dell'utente </h5> 

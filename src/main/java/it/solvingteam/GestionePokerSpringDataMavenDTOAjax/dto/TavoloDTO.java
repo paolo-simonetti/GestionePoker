@@ -8,8 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
 
-public class TavoloDTO implements AbstractDTO<Tavolo> {
-	//TODO: scrivere una validazione a parte per le ricerche (LocalDate.parse(), Integer.parseInt())	
+public class TavoloDTO implements AbstractDTO<Tavolo> {	
 
 	private Long idTavolo;
 	private String denominazione;
@@ -19,6 +18,21 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 	private String usernameCreatore;
 	private Set<String> usernameGiocatori = new TreeSet<>();
 	
+	
+	
+	public TavoloDTO(Long idTavolo, String denominazione, String dataCreazione, String esperienzaMinimaRichiesta,
+			String puntataMinima, String usernameCreatore) {
+		super();
+		this.idTavolo = idTavolo;
+		this.denominazione = denominazione;
+		this.dataCreazione = dataCreazione;
+		this.esperienzaMinimaRichiesta = esperienzaMinimaRichiesta;
+		this.puntataMinima = puntataMinima;
+		this.usernameCreatore = usernameCreatore;
+	}
+	
+	public TavoloDTO() {}
+
 	public Long getIdTavolo() {
 		return idTavolo;
 	}

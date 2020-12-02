@@ -23,7 +23,22 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 	private String creditoDisponibile;
 	private String statoUtente;
 	
-	
+	public UtenteDTO() {}
+
+	public UtenteDTO(Long idUtente, String nome, String cognome, String username, String password,
+			String dataRegistrazione, String esperienzaAccumulata, String creditoDisponibile, String statoUtente) {
+		super();
+		this.idUtente = idUtente;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.username = username;
+		this.password = password;
+		this.dataRegistrazione = dataRegistrazione;
+		this.esperienzaAccumulata = esperienzaAccumulata;
+		this.creditoDisponibile = creditoDisponibile;
+		this.statoUtente = statoUtente;
+	}
+
 	public Long getIdUtente() {
 		return idUtente;
 	}

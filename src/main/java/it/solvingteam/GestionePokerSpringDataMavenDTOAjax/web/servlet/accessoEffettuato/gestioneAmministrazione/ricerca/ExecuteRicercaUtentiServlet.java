@@ -71,6 +71,7 @@ public class ExecuteRicercaUtentiServlet extends HttpServlet {
 		Set<Utente> listaUtenti=utenteService.findByExample(utenteDaCercare);
 		
 		// Porto i risultati in pagina
+		request.setAttribute("criteriDiRicerca",utenteDTO);
 		request.setAttribute("listaUtenti",listaUtenti);
 		if(!listaUtenti.isEmpty()) {
 			request.setAttribute("risultatoRicercaUtentePerGet",

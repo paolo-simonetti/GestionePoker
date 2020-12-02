@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page import="it.solvingteam.GestionePokerSpringDataMavenDTOAjax.beans.UtenteDTOBean"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,6 +46,7 @@
 		  </button>
 		</div>
 		
+	
 		<div class='card'>
 		    <div class='card-header'>
 		        <h5>Lista dei risultati</h5> 
