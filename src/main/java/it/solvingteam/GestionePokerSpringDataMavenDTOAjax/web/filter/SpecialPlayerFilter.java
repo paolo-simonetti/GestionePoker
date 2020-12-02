@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter(filterName="/SpecialPlayerFilter", urlPatterns={"/accessoEffettuato/gestioneTavolo/*","/jsp/gestioneTavolo/*"})
+@WebFilter(filterName="/SpecialPlayerFilter", urlPatterns={"/accessoEffettuato/gestioneTavoli/*","/jsp/gestioneTavoli/*"})
 public class SpecialPlayerFilter implements Filter {
 
    

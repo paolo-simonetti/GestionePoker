@@ -32,9 +32,9 @@ public class AutenticazioneFilter implements Filter {
 		HttpSession session=servletRequest.getSession();
 		String pathAttuale = servletRequest.getServletPath();
 		boolean isInWhiteList = isPathInWhiteList(pathAttuale);
-		boolean isAbilitato = ((Utente) session.getAttribute("utenteIdentificato"))
-				.getStatoUtente().equals(StatoUtente.conversioneStatoUtente.get("abilitato"));				
-		if(!isInWhiteList && (session.getAttribute("utenteIdentificato")==null||!isAbilitato)) {
+		boolean isAttivo = ((Utente) session.getAttribute("utenteIdentificato"))
+				.getStatoUtente().equals(StatoUtente.conversioneStatoUtente.get("attivo"));				
+		if(!isInWhiteList && (session.getAttribute("utenteIdentificato")==null||!isAttivo)) {
 			session.invalidate();
 			request.setAttribute("errorMessage","Non hai i permessi per effettuare questa operazione!");
 			request.getServletContext().getRequestDispatcher("/jsp/generali/welcome.jsp").forward(request,response);

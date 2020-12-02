@@ -44,8 +44,13 @@
 	      <h3>Cosa vuoi fare oggi?</h3>
 	      <c:if test="${sessionScope.isAdmin eq 'true'}">
 	        <p><a class="btn btn-primary btn-lg" 
-	      	  href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/SchermataGeneraleServlet" role="button">
+	      	  href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/SchermataGeneraleGestioneAmministrazioneServlet" role="button">
 	      	    Vai alla gestione degli utenti &raquo;</a></p>
+	      </c:if>
+	      <c:if test="${sessionScope.isAdmin eq 'true' or sessionScope.isSpecialPlayer eq 'true'}">
+	        <p><a class="btn btn-primary btn-lg" 
+	      	  href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/SchermataGeneraleGestioneTavoliServlet" role="button">
+	      	    Vai alla gestione dei tavoli &raquo;</a></p>
 	      </c:if>
 	    </div>
 	  </div>
