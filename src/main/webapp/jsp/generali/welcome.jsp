@@ -29,7 +29,7 @@
 		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none': ''}" role="alert">
 		  <table class='table table-striped ' >
 		  	<thead>
-		  		<tr><th> Login non riuscito: </th></tr>
+		  		<tr><th> Operazione non riuscita: </th></tr>
 		  	</thead>
 		  	<tbody>
 		  	<c:forEach items="${errorMessage}" var="item">

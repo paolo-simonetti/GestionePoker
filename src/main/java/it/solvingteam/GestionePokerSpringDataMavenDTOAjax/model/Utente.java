@@ -1,6 +1,6 @@
 package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model;
 
-import java.time.Clock;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -64,9 +64,6 @@ public class Utente implements Comparable<Utente> {
 		this.cognome = cognome;
 		this.username = username;
 		this.password = password;
-		this.dataRegistrazione = LocalDate.now(Clock.systemUTC());
-		this.esperienzaAccumulata=0;
-		this.creditoDisponibile=0;
 	}
 
 	public Long getIdUtente() {
@@ -129,6 +126,10 @@ public class Utente implements Comparable<Utente> {
 		return ruoli;
 	}
 	
+	public void setRuoli(Set<RuoloUtente> ruoli) {
+		this.ruoli = ruoli;
+	}
+
 	public boolean addToRuoli(RuoloUtente ruoloUtente) {
 		// se l'utente non ha ruoli, aggiungo subito ruoloUtente
 		if(ruoli.size()==0) {
@@ -164,6 +165,10 @@ public class Utente implements Comparable<Utente> {
 	
 	public Set<Tavolo> getTavoliCreati() {
 		return tavoliCreati;
+	}
+
+	public void setTavoliCreati(Set<Tavolo> tavoliCreati) {
+		this.tavoliCreati=tavoliCreati;		
 	}
 	
 	public boolean addToTavoliCreati(Tavolo tavolo) {
@@ -220,6 +225,7 @@ public class Utente implements Comparable<Utente> {
 	public int compareTo(Utente utenteInstance) {
 		return username.compareTo(utenteInstance.getUsername());
 	}
+
 	
 	
 	

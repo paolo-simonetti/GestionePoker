@@ -77,7 +77,7 @@
 							</div>
 
 						</div>
-						
+						<c:if test="${requestScope.utenteDaAggiornare.statoUtente.toString() ne 'creato'}">
 						<div class="form-row">	
 							<div class="form-group col-md-3">
 								<label>Esperienza accumulata</label>
@@ -92,33 +92,7 @@
 								  value="${requestScope.utenteDaAggiornare.creditoDisponibile}" class="form-control" required
 								>
 							</div>
-
-						</div>
-						
-						<div class="form-row">	
-	
-							<div class="form-group col-md-3">
-							  <label for="selectStati">Stato utente: <span class="text-danger">*</span></label>
-  					      	  <select class="form-control" id="selectStati" name="selectStati" multiple>
-     					        <c:forEach items="${requestScope.listaStati}" var="stato"> 
-    					    	  <option value="${stato}">
-    					    	    ${stato}
-    					    	  </option>
-    					    	</c:forEach>
-  					      	  </select>
-							</div>		
-
-							<div class="form-group col-md-6">
-							  <label for="selectRuoli">Ruoli: </label>
-  					      	  <select class="form-control" id="selectRuoli" name="selectRuoli" multiple>
-     					        <c:forEach items="${requestScope.listaRuoli}" var="ruolo"> 
-    					    	  <option value="${ruolo}">
-    					    	    ${ruolo}
-    					    	  </option>
-    					    	</c:forEach>
-  					      	  </select>
-							</div>
-
+							
 							<div class="form-group col-md-6">
 							  <label for="selectTavoli">Tavoli creati: </label>
   					      	  <select class="form-control" id="selectTavoli" name="selectTavoli" multiple>
@@ -135,7 +109,27 @@
 								<input type="text" class="form-control" name="tavoloDiGioco" 
 								  value="${requestScope.utenteDaAggiornare.tavoloDiGioco.idTavolo}" id="tavoloDiGioco" required
 								>
-							</div>		
+							</div>	
+
+						</div>
+						</c:if>
+						
+						<div class="form-row">	
+							<c:if test="${not empty requestScope.listaRuoli}">	
+
+							<div class="form-group col-md-6">
+							  <label for="selectRuoli">Ruoli: </label>
+  					      	  <select class="form-control" id="selectRuoli" name="selectRuoli" multiple>
+     					        <c:forEach items="${requestScope.listaRuoli}" var="ruolo"> 
+    					    	  <option value="${ruolo}">
+    					    	    ${ruolo}
+    					    	  </option>
+    					    	</c:forEach>
+  					      	  </select>
+							</div>
+							</c:if>
+
+								
 
 
 						</div>

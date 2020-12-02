@@ -134,6 +134,8 @@ public class ExecuteRegistrazioneServlet extends HttpServlet {
 			} else {
 				// Altrimenti, il nuovo utente si registra; il ruolo e l'abilitazione glieli darà l'admin
 				try {
+					utenteDaRegistrare.setCreditoDisponibile(0);
+					utenteDaRegistrare.setEsperienzaAccumulata(0);
 					utenteService.inserisciNuovo(utenteDaRegistrare);
 					request.setAttribute("successMessage","Registrazione effettuata!");
 				} catch (Exception e) {

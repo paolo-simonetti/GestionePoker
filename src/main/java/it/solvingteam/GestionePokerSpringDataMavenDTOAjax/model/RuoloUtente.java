@@ -64,6 +64,10 @@ public class RuoloUtente implements Comparable<RuoloUtente> {
 		return utenti;
 	}
 	
+	public void setUtenti(Set<Utente> utenti) {
+		this.utenti = utenti;
+	}
+
 	public boolean addToUtenti(Utente utente) {
 		if (!utenti.contains(utente)) {
 			utenti.add(utente);

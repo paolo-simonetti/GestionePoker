@@ -99,7 +99,7 @@ public class UtenteServiceImpl implements UtenteService {
 			query += " and u.creditoDisponibile >= " + example.getCreditoDisponibile() + " ";
 		}
 		if(example.getStatoUtente()!=null) {
-			query += " and u.statoUtente = "+example.getStatoUtente() + " ";
+			query += " and u.statoUtente = '"+example.getStatoUtente() + "' ";
 		}
 		
 		// Tengo conto della casistica iniziale, per i criteri di ricerca sui tavoli

@@ -80,13 +80,15 @@
 									Visualizza utente
 								  </a>
 								  <a class="btn  btn-sm btn-outline-primary ml-2 mr-2" 
-								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/aggiornamentoUtente/PrepareUpdateUtenteServlet?${requestScope.risultatoRicercaUtentePerGet}idUtenteDaAggiornare=${item.idUtente}&paginaDiProvenienza=risultatiRicercaUtenti">
+								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/aggiornamentoUtente/PrepareUpdateUtenteServlet?${requestScope.risultatoRicercaUtentePerGet}idUtenteDaAggiornare=${item.idUtente}">
 								    Aggiorna utente
 								  </a>
+								  <c:if test="${item.statoUtente.toString() ne 'creato'}">
 								  <a class="btn btn-outline-danger btn-sm" 
-								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/eliminazioneUtente/PrepareDeleteUtenteServlet?${requestScope.risultatoRicercaUtentePerGet}idUtenteDaEliminare=${item.idUtente}&paginaDiProvenienza=risultatiRicercaUtenti">
-								    Disabilita utente
+								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneAmministrazione/attivazioneEDisabilitazione/PrepareOperazioniServlet?${requestScope.risultatoRicercaUtentePerGet}idUtenteDaAttivareODisabilitare=${item.idUtente}">
+								    <c:if test="${item.statoUtente.toString() eq 'attivo'}"> <c:out value="Disabilita"/> </c:if> <c:if test="${item.statoUtente.toString() eq 'disabilitato'}"> <c:out value="Reimposta a 'creato'"/> </c:if> utente
 								  </a>
+								  </c:if>
 								
 							  	</td>
 		                      </tr>

@@ -12,8 +12,7 @@ import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
 
 public class UtenteDTO implements AbstractDTO<Utente> {
 // Usare il design factory per i costruttori
-
-//TODO: scrivere una validazione a parte per le ricerche (LocalDate.parse(), Integer.parseInt())	
+	
 	private Long idUtente;
 	private String nome;
 	private String cognome;
@@ -94,7 +93,44 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 	}
 
 	public void setStatoUtente(String statoUtente) {
-		this.statoUtente = statoUtente;
+		this.statoUtente = statoUtente; 
+	}
+	
+	public Set<String> errorAggiorna() {
+		Set<String> result = new TreeSet<>();
+		if(StringUtils.isBlank(this.nome))
+			result.add("Il campo nome non può essere vuoto");
+		if(StringUtils.isBlank(this.cognome))
+			result.add("Il campo cognome non può essere vuoto");
+		if(StringUtils.isBlank(this.username))
+			result.add("Il campo username non può essere vuoto");
+		if(!StringUtils.isBlank(this.dataRegistrazione)) {
+			try {
+				LocalDate.parse(this.dataRegistrazione);
+			} catch(DateTimeParseException e) {
+				e.printStackTrace();
+				result.add("Data inserita non valida!");
+			}
+		}
+		
+		if (!StringUtils.isBlank(this.esperienzaAccumulata)) {
+			try {
+				Integer.parseInt(this.esperienzaAccumulata);
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("L'esperienza accumulata è un numero intero!");
+			}
+		}
+		
+		if (!StringUtils.isBlank(this.creditoDisponibile)) {
+			try {
+				Integer.parseInt(this.creditoDisponibile);
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("Il credito disponibile è un numero intero!");
+			}
+		}
+		return result;
 	}
 	
 	@Override
@@ -176,11 +212,18 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 	}
 
 	public String generaRisultatoRicercaPerGet(Set<Utente> risultatoRicercaUtenti) {
-		String markerIniziale="risultatoRicercaUtentePerGet=";
-		String markerDiMezzo="&"+markerIniziale;
-		String result=markerIniziale+
-				risultatoRicercaUtenti.stream().map(utente-> utente.getIdUtente().toString())
-				.reduce((id1,id2)->id1+markerDiMezzo+id2+"&").get();	
+		String result="";
+		for (Utente utente: risultatoRicercaUtenti) {
+			result+=("risultatoRicercaUtentePerGet="+utente.getIdUtente()+"&");
+		}
+		return result;
+	}
+	
+	public String generaRisultatoRicercaPerPost(Set<Utente> risultatoRicercaUtenti) {
+		String result="";
+		for (Utente utente: risultatoRicercaUtenti) {
+			result+=(utente.getIdUtente()+", ");
+		}
 		return result;
 	}
 	

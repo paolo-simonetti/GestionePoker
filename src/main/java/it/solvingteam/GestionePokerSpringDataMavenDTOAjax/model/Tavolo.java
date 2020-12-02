@@ -35,10 +35,10 @@ public class Tavolo implements Comparable<Tavolo> {
 	
 	public Tavolo() {} // mi serve quando uso il DTO nelle ricerche 
 	
-	public Tavolo(String denominazione, Integer esperienzaMinimaRichiesta, Integer puntataMinima, Utente creatore) {
+	public Tavolo(String denominazione, LocalDate dataCreazione, Integer esperienzaMinimaRichiesta, Integer puntataMinima, Utente creatore) {
 		super();
 		this.denominazione = denominazione;
-		this.dataCreazione = LocalDate.now();
+		this.dataCreazione=dataCreazione;
 		this.esperienzaMinimaRichiesta = esperienzaMinimaRichiesta;
 		this.puntataMinima=puntataMinima;
 		this.creatore = creatore;
@@ -96,6 +96,10 @@ public class Tavolo implements Comparable<Tavolo> {
 		return giocatori;
 	}
 	
+	public void setGiocatori(Set<Utente> giocatori) {
+		this.giocatori = giocatori;
+	}
+
 	public boolean addToGiocatori(Utente giocatore) {
 		if (!giocatori.contains(giocatore)) {
 			this.giocatori.add(giocatore);

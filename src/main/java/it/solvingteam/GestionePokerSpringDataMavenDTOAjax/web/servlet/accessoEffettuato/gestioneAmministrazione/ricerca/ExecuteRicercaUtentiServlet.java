@@ -62,7 +62,7 @@ public class ExecuteRicercaUtentiServlet extends HttpServlet {
 			request.setAttribute("errorMessage",utenteDTO.errorRicerca());
 			request.getServletContext()
 				.getRequestDispatcher("/jsp/gestioneAmministrazione/ricerca/ricercaUtenti.jsp")
-				.forward(request,response);
+					.forward(request,response);
 			return;
 		} 
 		
@@ -73,7 +73,8 @@ public class ExecuteRicercaUtentiServlet extends HttpServlet {
 		// Porto i risultati in pagina
 		request.setAttribute("listaUtenti",listaUtenti);
 		if(!listaUtenti.isEmpty()) {
-			request.setAttribute("risultatoRicercaUtentePerGet",utenteDTO.generaRisultatoRicercaPerGet(listaUtenti));
+			request.setAttribute("risultatoRicercaUtentePerGet",
+					utenteDTO.generaRisultatoRicercaPerGet(listaUtenti));
 			request.setAttribute("successMessage","Ricerca eseguita con successo");			
 		} else {
 			request.setAttribute("errorMessage","Non è stato trovato alcun risultato");

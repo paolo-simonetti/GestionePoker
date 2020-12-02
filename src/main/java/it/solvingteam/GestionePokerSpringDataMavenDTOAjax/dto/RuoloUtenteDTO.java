@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.NomeRuolo;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.RuoloUtente;
 
-public class RuoloUtenteDTO implements AbstractDTO<RuoloUtente> {
+public class RuoloUtenteDTO implements AbstractDTO<RuoloUtente>, Comparable<RuoloUtenteDTO> {
 
 	private Long idRuolo;
 	private String descrizioneRuolo;
@@ -69,6 +69,11 @@ public class RuoloUtenteDTO implements AbstractDTO<RuoloUtente> {
 	public void buildDTOFromModel(RuoloUtente ruoloInstance) {
 		this.setIdRuolo(ruoloInstance.getIdRuolo());
 		this.setDescrizioneRuolo(ruoloInstance.getDescrizioneRuolo());
+	}
+
+	@Override
+	public int compareTo(RuoloUtenteDTO ruoloUtenteDTO) {
+		return descrizioneRuolo.compareTo(ruoloUtenteDTO.getDescrizioneRuolo());
 	}
 
 }

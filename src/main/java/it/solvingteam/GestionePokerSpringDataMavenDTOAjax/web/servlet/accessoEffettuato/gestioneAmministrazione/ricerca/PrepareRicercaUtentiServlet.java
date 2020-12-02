@@ -48,7 +48,7 @@ public class PrepareRicercaUtentiServlet extends HttpServlet {
 		//altrimenti non posso mai assegnarlo!
 		listaRuoli.add(null);
 		request.setAttribute("listaRuoli",listaRuoli);
-		request.setAttribute("listaStati",StatoUtente.conversioneStatoUtente.values());
+		request.setAttribute("listaStati",StatoUtente.conversioneStatoUtente.keySet());
 		/* recupero la lista dei tavoli; per ora, non mi serve l'informazione sui loro creatori,  
 		 * la prendo nell'executeRicerca */
 		request.setAttribute("listaTavoli", tavoloService.elenca());
