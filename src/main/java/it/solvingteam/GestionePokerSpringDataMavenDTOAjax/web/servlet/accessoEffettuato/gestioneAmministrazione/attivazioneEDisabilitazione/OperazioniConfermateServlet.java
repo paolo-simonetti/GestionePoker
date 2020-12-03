@@ -99,6 +99,10 @@ public class OperazioniConfermateServlet extends HttpServlet {
 		utenteDaAttivareODisabilitare.setStatoUtente(StatoUtente.conversioneStatoUtente.get("disabilitato"));
 		// Aggiorno il db
 		utenteService.aggiorna(utenteDaAttivareODisabilitare);
+		// Aggiorno l'utente in sessione, se è lo stesso che ho aggiornato
+		if(utenteDaAttivareODisabilitare.getIdUtente()==((Utente) request.getSession().getAttribute("utenteIdentificato")).getIdUtente()) {
+			request.getSession().setAttribute("utenteIdentificato",utenteDaAttivareODisabilitare);					
+		}
 		// Recupero i risultati (aggiornati) della ricerca originaria e torno in pagina
 		Set<Utente> risultatoRicercaUtente=Arrays.asList(idUtentiRisultatoRicerca).stream()
 				.map(stringaId->utenteService.caricaSingoloUtente(Long.parseLong(stringaId)))

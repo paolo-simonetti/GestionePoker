@@ -84,15 +84,16 @@ public class LoginServlet extends HttpServlet {
 		 */
 		if (utenteIsRegistrato) {
 			HttpSession session=request.getSession(true);
-			session.setAttribute("utenteIdentificato",utenteService
-					.trovaTramiteIdConInformazioniComplete(utenteIdentificato.getIdUtente()));
+			Utente utenteConInformazioniComplete=utenteService
+					.trovaTramiteIdConInformazioniComplete(utenteIdentificato.getIdUtente());
+			session.setAttribute("utenteIdentificato",utenteConInformazioniComplete);
 
 			// Non è necessario, perché sono info che ho già dall'utente che ho messo in sessione,
 			// ma è comodo salvare in sessione dei booleani che verifichino se l'utente ha un certo ruolo
 			boolean isAdmin=false;
 			boolean isSpecialPlayer=false;
 			boolean isPlayer=false;
-			for (RuoloUtente r:utenteIdentificato.getRuoli()) {
+			for (RuoloUtente r:utenteConInformazioniComplete.getRuoli()) {
 				if (r.equals(new RuoloUtente("admin"))) {
 					isAdmin=true;
 				}
@@ -108,6 +109,13 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("isAdmin",isAdmin);
 			session.setAttribute("isSpecialPlayer",isSpecialPlayer);
 			session.setAttribute("isPlayer",isPlayer);
+			
+			// Mi rimane comodo, per la schermata di gestione tavoli, portare in sessione un booleano che indichi se l'utente ha creato tavoli
+			if (utenteConInformazioniComplete.getTavoliCreati()==null||utenteConInformazioniComplete.getTavoliCreati().size()==0) {
+				session.setAttribute("haCreatoTavoli",false);
+			} else {
+				session.setAttribute("haCreatoTavoli",true);
+			}
 			
 			request.getServletContext().getRequestDispatcher("/jsp/generali/menu.jsp").forward(request,response);
 		} else {

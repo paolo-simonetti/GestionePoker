@@ -5,27 +5,22 @@ package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.builder;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.dto.TavoloDTO;
 
 public final class TavoloDTOBuilder {
-	private Long idTavolo;
 	private String denominazione;
 	private String dataCreazione;
 	private String esperienzaMinimaRichiesta;
 	private String puntataMinima;
 	private String usernameCreatore;
+	private Long idTavolo;
 	
-	private TavoloDTOBuilder(Long idTavolo) {
+	private TavoloDTOBuilder(String denominazione) {
 		super();
-		this.idTavolo = idTavolo;
+		this.denominazione = denominazione;
 	}
 	
-	public static TavoloDTOBuilder nuovoBuilder(Long idTavolo) {
-		return new TavoloDTOBuilder(idTavolo);
+	public static TavoloDTOBuilder nuovoBuilder(String denominazione) {
+		return new TavoloDTOBuilder(denominazione);
 	}
-	
-	public TavoloDTOBuilder denominazione(String denominazione) {
-		this.denominazione=denominazione;
-		return this;
-	}
-	
+		
 	public TavoloDTOBuilder dataCreazione(String dataCreazione) {
 		this.dataCreazione=dataCreazione;
 		return this;
@@ -45,7 +40,12 @@ public final class TavoloDTOBuilder {
 		this.usernameCreatore=usernameCreatore;
 		return this;
 	}
-	
+
+	public TavoloDTOBuilder idTavolo(Long idTavolo) {
+		this.idTavolo=idTavolo;
+		return this;
+	}
+
 	public TavoloDTO build() {
 		return new TavoloDTO(idTavolo,denominazione,dataCreazione,esperienzaMinimaRichiesta,puntataMinima,usernameCreatore);
 	}

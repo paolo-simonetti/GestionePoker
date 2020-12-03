@@ -68,10 +68,10 @@ public class TavoloServiceImpl implements TavoloService {
 		// quando è un giocatore a effettuare la ricerca, può inserire anche il creatore e i giocatori
 		if (!example.getGiocatori().isEmpty() && example.getCreatore()!=null) {
 			query= "select t from Tavolo t join fetch t.giocatori g join fetch t.creatore c where t.idTavolo = t.idTavolo ";
-		} else if(!example.getGiocatori().isEmpty() && example.getCreatore()==null) {
-			query="select t from Tavolo t join fetch t.giocatori g where t.idTavolo = t.idTavolo ";
 	 	} else {
-			query= "select t from Tavolo t where t.idTavolo = t.idTavolo ";
+	 	/* Nella pagina dei risultati della ricerca, ho bisogno di sapere se i tavoli hanno giocatori,
+	 	 *  in modo da bloccarne l'update e la delete */
+			query= "select t from Tavolo t join fetch t.giocatori g where t.idTavolo = t.idTavolo ";
 		}
 			
 		if (StringUtils.isNotEmpty(example.getDenominazione()))

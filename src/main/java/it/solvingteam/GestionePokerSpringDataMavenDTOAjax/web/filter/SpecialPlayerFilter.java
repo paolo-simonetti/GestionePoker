@@ -26,7 +26,9 @@ public class SpecialPlayerFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest servletRequest=(HttpServletRequest) request;
 		HttpSession session=servletRequest.getSession();
-		if(!(boolean) session.getAttribute("isSpecialPlayer")) {
+		Boolean isAdmin=(boolean) session.getAttribute("isAdmin");
+		Boolean isSpecialPlayer=(boolean) session.getAttribute("isSpecialPlayer");
+		if(!isAdmin &&!isSpecialPlayer) {
 			session.invalidate();
 			request.setAttribute("errorMessage","Non hai i permessi per effettuare questa operazione!");
 			request.getServletContext().getRequestDispatcher("/jsp/generali/welcome.jsp").forward(request,response);

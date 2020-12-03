@@ -216,6 +216,11 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 				// Ora posso fare l'update dell'utente
 				utenteService.aggiorna(utenteAggiornato);
 				
+				// Aggiorno l'utente in sessione, se è lo stesso che ho aggiornato
+				if(utenteAggiornato.getIdUtente()==((Utente) request.getSession().getAttribute("utenteIdentificato")).getIdUtente()) {
+					request.getSession().setAttribute("utenteIdentificato",utenteAggiornato);					
+				}
+				
 				// Recupero i risultati della ricerca originaria e torno alla pagina dei risultati della ricerca
 				Set<Utente> utentiRisultantiDaRicerca=Arrays.asList(stringaIdRisultatiRicerca).stream()
 					.map(stringaId->utenteService.caricaSingoloUtente(Long.parseLong(stringaId)))

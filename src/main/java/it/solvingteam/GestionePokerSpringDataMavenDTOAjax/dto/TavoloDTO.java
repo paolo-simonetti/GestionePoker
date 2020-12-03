@@ -1,6 +1,7 @@
 package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -86,28 +87,30 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 	}
 
 	@Override
-	public Set<String> errors() {
+	public Set<String> errors() throws NumberFormatException {
 		Set<String> result = new TreeSet<String>();
 		if(StringUtils.isBlank(this.denominazione))
 			result.add("Il campo denominazione non può essere vuoto");
 		if(StringUtils.isBlank(this.esperienzaMinimaRichiesta)) {
-			result.add("Il campo Esperienza minima richiesta non può essere vuoto");
+			result.add("Il campo Esperienza minima richiesta è obbligatorio e deve essere un numero");
 		} else {
 			try {
 				Integer.parseInt(this.esperienzaMinimaRichiesta);
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
-				result.add("Il campo Esperienza minima richiesta deve essere un numero");
+				result.add("Il campo Esperienza minima richiesta deve essere un numero. Hai provato a cambiarne il tipo di input?");
+				throw e;
 			}
 		}
 		if(StringUtils.isBlank(this.puntataMinima)) {
-			result.add("Il campo Puntata minima non può essere vuoto");
+			result.add("Il campo Puntata minima è obbligatorio e deve essere un numero");
 		} else {
 			try {
 				Integer.parseInt(puntataMinima);
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
-				result.add("Il campo Puntata minima deve essere un numero");
+				result.add("Il campo Puntata minima richiesta deve essere un numero. Hai provato a cambiarne il tipo di input?");
+				throw e;
 			}
 		}
 		if(StringUtils.isBlank(this.usernameCreatore))
@@ -126,6 +129,38 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result ="Id inserito non valido";
+			}
+		}
+		
+		return result;
+	}
+	
+	public Set<String> errorRicerca() {
+		Set<String> result=new TreeSet<>();
+		if(!StringUtils.isBlank(this.dataCreazione)) {
+			try {
+				LocalDate.parse(this.dataCreazione);
+			} catch(DateTimeParseException e) {
+				e.printStackTrace();
+				result.add("Data inserita non valida!");
+			}
+		}
+		
+		if (!StringUtils.isBlank(this.esperienzaMinimaRichiesta)) {
+			try {
+				Integer.parseInt(this.esperienzaMinimaRichiesta);
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("L'esperienza minimaRichiesta è un numero intero!");
+			}
+		}
+		
+		if (!StringUtils.isBlank(this.puntataMinima)) {
+			try {
+				Integer.parseInt(this.puntataMinima);
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("La puntata minima è un numero intero!");
 			}
 		}
 		
