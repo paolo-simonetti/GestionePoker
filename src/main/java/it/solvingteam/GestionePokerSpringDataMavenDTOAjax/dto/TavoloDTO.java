@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
 
-public class TavoloDTO implements AbstractDTO<Tavolo> {	
+public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO> {	
 
 	private Long idTavolo;
 	private String denominazione;
@@ -84,6 +84,10 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 
 	public Set<String> getUsernameGiocatori() {
 		return usernameGiocatori;
+	}
+
+	public void setUsernameGiocatori(Set<String> usernameGiocatori) {
+		this.usernameGiocatori = usernameGiocatori;
 	}
 
 	@Override
@@ -172,9 +176,15 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 		Tavolo result = new Tavolo();
 		result.setIdTavolo(idTavolo);
 		result.setDenominazione(denominazione);
-		result.setDataCreazione(LocalDate.parse(dataCreazione));
-		result.setEsperienzaMinimaRichiesta(Integer.parseInt(esperienzaMinimaRichiesta));
-		result.setPuntataMinima(Integer.parseInt(puntataMinima));
+		if(!StringUtils.isBlank(dataCreazione)) {			
+			result.setDataCreazione(LocalDate.parse(dataCreazione));
+		} 
+		if(!StringUtils.isBlank(esperienzaMinimaRichiesta)) {
+			result.setEsperienzaMinimaRichiesta(Integer.parseInt(esperienzaMinimaRichiesta));			
+		}
+		if(!StringUtils.isBlank(esperienzaMinimaRichiesta)) {
+			result.setPuntataMinima(Integer.parseInt(puntataMinima));			
+		}
 		return result;
 	}
 
@@ -187,6 +197,11 @@ public class TavoloDTO implements AbstractDTO<Tavolo> {
 		this.setPuntataMinima(tavoloInstance.getPuntataMinima().toString());
 		this.setUsernameCreatore(tavoloInstance.getCreatore().getUsername());
 		tavoloInstance.getGiocatori().stream().forEach(giocatore->this.getUsernameGiocatori().add(giocatore.getUsername()));
+	}
+
+	@Override
+	public int compareTo(TavoloDTO tavoloDTO) {
+		return denominazione.compareTo(tavoloDTO.getDenominazione());
 	}
 
 }

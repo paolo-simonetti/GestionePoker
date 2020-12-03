@@ -67,11 +67,11 @@ public class TavoloServiceImpl implements TavoloService {
 		String query = null;
 		// quando è un giocatore a effettuare la ricerca, può inserire anche il creatore e i giocatori
 		if (!example.getGiocatori().isEmpty() && example.getCreatore()!=null) {
-			query= "select t from Tavolo t join fetch t.giocatori g join fetch t.creatore c where t.idTavolo = t.idTavolo ";
+			query= "select t from Tavolo t left join fetch t.giocatori g join fetch t.creatore c where t.idTavolo = t.idTavolo ";
 	 	} else {
 	 	/* Nella pagina dei risultati della ricerca, ho bisogno di sapere se i tavoli hanno giocatori,
 	 	 *  in modo da bloccarne l'update e la delete */
-			query= "select t from Tavolo t join fetch t.giocatori g where t.idTavolo = t.idTavolo ";
+			query= "select t from Tavolo t left join fetch t.giocatori g where t.idTavolo = t.idTavolo ";
 		}
 			
 		if (StringUtils.isNotEmpty(example.getDenominazione()))
@@ -82,7 +82,7 @@ public class TavoloServiceImpl implements TavoloService {
 			query += " and t.esperienzaMinimaRichiesta >= " + example.getEsperienzaMinimaRichiesta();
 		if (example.getPuntataMinima() != null && example.getPuntataMinima()> 0)
 			query += " and t.puntataMinima >= " + example.getPuntataMinima();
-		if (!example.getGiocatori().isEmpty()) { // non serve distinguere tre casi come sopra
+		if (!example.getGiocatori().isEmpty()) { // non serve distinguere due casi come sopra
 			for(Long idGiocatore:example.getGiocatori().stream().map(giocatore->giocatore.getIdUtente())
 					.collect(Collectors.toSet())) {
 				query += " and g.idUtente= " + idGiocatore;							

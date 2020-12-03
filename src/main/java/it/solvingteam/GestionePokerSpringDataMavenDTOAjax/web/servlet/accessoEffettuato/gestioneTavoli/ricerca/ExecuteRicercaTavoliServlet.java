@@ -47,7 +47,7 @@ public class ExecuteRicercaTavoliServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Recupero i campi immessi dallo user
 		TavoloDTO tavoloDTO=TavoloDTOBuilder.nuovoBuilder(request.getParameter("denominazione"))	
-			.dataCreazione(request.getParameter("denominazionedataCreazione"))
+			.dataCreazione(request.getParameter("dataCreazione"))
 			.esperienzaMinimaRichiesta(request.getParameter("esperienzaMinimaRichiesta"))
 			.puntataMinima(request.getParameter("puntataMinima")).build();
 		
@@ -73,12 +73,14 @@ public class ExecuteRicercaTavoliServlet extends HttpServlet {
 		tavoliTrovati.stream().forEach(tavolo-> {
 			TavoloDTO tavoloDTOItem=new TavoloDTO();
 			tavoloDTOItem.buildDTOFromModel(tavolo);
+			tavoloDTOItem.setUsernameGiocatori(tavolo.getGiocatori()
+					.stream().map(giocatore->giocatore.getUsername()).collect(Collectors.toSet()));
 			tavoliTrovatiDTO.add(tavoloDTOItem);
 		});
-		
+		tavoliTrovatiDTO.stream().forEach(tDTO->System.out.println(tDTO.getUsernameGiocatori().size()));
 		// Mando alla pagina dei risultati sia i tavoli trovati, sia i criteri della ricerca effettuata
 		request.setAttribute("listaTavoli",tavoliTrovatiDTO);
-		request.setAttribute("criteriDiRicerca",tavoloDTO);
+		request.setAttribute("tavoloDTO",tavoloDTO);
 		request.setAttribute("successMessage","Ricerca effettuata con successo!");
 		request.getServletContext().getRequestDispatcher("/jsp/gestioneTavoli/ricerca/risultatiRicercaTavoli.jsp")
 			.forward(request,response);
