@@ -22,4 +22,6 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>, QueryByE
 	@Query("from Tavolo t left join fetch t.giocatori g where t.idTavolo = ?1")
 	Tavolo findByIdWithGiocatori(Long idTavolo);
 	
+	@Query("from Tavolo t left join fetch t.giocatori g join fetch t.creatore where t.idTavolo = ?1")
+	Tavolo findByIdWithCompleteInfo(Long idTavolo);
 }

@@ -26,5 +26,7 @@ public Set<Tavolo> elenca();
 	public Tavolo trovaTramiteIdConCreatore(Long idTavolo);
 	
 	public Tavolo trovaTramiteIdConGiocatori(Long idTavolo);
-	
+
+	public Tavolo trovaTramiteIdConInformazioniComplete(Long idTavolo);
+
 }

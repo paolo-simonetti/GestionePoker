@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page import="it.solvingteam.GestionePokerSpringDataMavenDTOAjax.beans.TavoloDTOBean"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,12 +19,6 @@
 </head>
 <body>
 	
-	<!--  palleggio i criteri di ricerca -->
-	<jsp:useBean id="criteriDiRicerca" class="it.solvingteam.GestionePokerSpringDataMavenDTOAjax.beans.TavoloDTOBean" scope="request" />
-	<jsp:setProperty name="criteriDiRicerca" property="denominazione" value="${requestScope.tavoloDTO.denominazione}"/>
-	<jsp:setProperty name="criteriDiRicerca" property="dataCreazione" value="${requestScope.tavoloDTO.dataCreazione}"/>
-	<jsp:setProperty name="criteriDiRicerca" property="esperienzaMinimaRichiesta" value="${requestScope.tavoloDTO.esperienzaMinimaRichiesta}"/>
-	<jsp:setProperty name="criteriDiRicerca" property="puntataMinima" value="${requestScope.tavoloDTO.puntataMinima}"/>
 	
 	<jsp:include page="/jsp/generali/navbar.jsp"></jsp:include>
 	
@@ -43,8 +36,8 @@
 		  		<tr><th> Operazione non riuscita: </th></tr>
 		  	</thead>
 		  	<tbody>
-		  	<c:forEach items="${errorMessage}" var="errorItem">
-		  		<tr><td> ${errorItem} </td></tr>
+		  	<c:forEach items="${errorMessage}" var="item">
+		  		<tr><td> ${item} </td></tr>
 		  	</c:forEach>
 		  	</tbody>
 		  </table>
@@ -78,19 +71,19 @@
 		                        <td><c:out value="${item.dataCreazione}"></c:out></td>
 		                        <td><c:out value="${item.esperienzaMinimaRichiesta}"></c:out></td>
 		                        <td><c:out value="${item.puntataMinima}"></c:out></td>
-		                     
+		                    
 	               				<td>
 								  <a class="btn  btn-sm btn-outline-secondary" 
-								  	href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/visualizzazioneTavolo/VisualizzazioneTavoloServlet?idTavoloDaVisualizzare=${item.idTavolo}">
+								  	href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/visualizzazioneTavolo/VisualizzazioneTavoloServlet${requestScope.criteriDiRicerca}idTavoloDaVisualizzare=${item.idTavolo}">
 									Visualizza tavolo
 								  </a>
 								  <c:if test="${item.usernameGiocatori.size()==0}">
 								  <a class="btn  btn-sm btn-outline-primary ml-2 mr-2" 
-								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/aggiornamentoTavolo/PrepareUpdateTavoloServlet?idTavoloDaAggiornare=${item.idTavolo}">
+								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/aggiornamentoTavolo/PrepareUpdateTavoloServlet${requestScope.criteriDiRicerca}idTavoloDaAggiornare=${item.idTavolo}">
 								    Aggiorna tavolo
 								  </a>
 								  <a class="btn  btn-sm btn-outline-danger ml-2 mr-2" 
-								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/eliminazioneTavolo/PrepareDeleteTavoloServlet?idTavoloDaEliminare=${item.idTavolo}">
+								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/eliminazioneTavolo/PrepareDeleteTavoloServlet${requestScope.criteriDiRicerca}idTavoloDaEliminare=${item.idTavolo}">
 								    Elimina tavolo
 								  </a>
 								  </c:if>

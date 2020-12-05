@@ -117,8 +117,13 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 			result.add("Il campo nome non può essere vuoto");
 		if(StringUtils.isBlank(this.cognome))
 			result.add("Il campo cognome non può essere vuoto");
-		if(StringUtils.isBlank(this.username))
+		if(StringUtils.isBlank(this.username)) {
 			result.add("Il campo username non può essere vuoto");
+		} else if(this.username.trim().split("\\s+").length>1) {
+			result.add("Nel campo username non possono essere inseriti spazi");
+		} else if(this.username.trim().split("-").length>1) {
+			result.add("Nel campo username non possono essere inseriti trattini '-'");
+		}
 		if(!StringUtils.isBlank(this.dataRegistrazione)) {
 			try {
 				LocalDate.parse(this.dataRegistrazione);
@@ -157,12 +162,15 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 			result.add("Il campo nome non può essere vuoto");
 		if(StringUtils.isBlank(this.cognome))
 			result.add("Il campo cognome non può essere vuoto");
-		if(StringUtils.isBlank(this.username))
-			result.add("Il campo username non può essere vuoto");
+		if(StringUtils.isBlank(this.username)) {
+			result.add("Il campo username non può essere vuoto");			
+		} else if(this.username.trim().split("\\s+").length>1) {
+			result.add("Nel campo username non possono essere inseriti spazi");
+		} else if(this.username.trim().split("-").length>1) {
+			result.add("Nel campo username non possono essere inseriti trattini '-'");
+		}
 		if(StringUtils.isBlank(this.password))
 			result.add("Il campo password non può essere vuoto");
-		/* per ora non mi serve altro. TODO: tornare qui e aggiungere le altre validazioni,
-		 * se capita di doverne fare */
 		return result;
 	}
 

@@ -119,4 +119,9 @@ public class TavoloServiceImpl implements TavoloService {
 		return tavoloRepository.findByIdWithGiocatori(idTavolo);
 	}
 
+	@Override
+	public Tavolo trovaTramiteIdConInformazioniComplete(Long idTavolo) {
+		return tavoloRepository.findByIdWithCompleteInfo(idTavolo);
+	}
+
 }

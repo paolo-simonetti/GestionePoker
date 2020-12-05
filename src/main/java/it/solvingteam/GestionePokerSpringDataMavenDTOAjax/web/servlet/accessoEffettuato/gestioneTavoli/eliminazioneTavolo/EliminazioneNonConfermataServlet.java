@@ -1,4 +1,4 @@
-package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.web.servlet.accessoEffettuato.gestioneTavoli.ricerca;
+package it.solvingteam.GestionePokerSpringDataMavenDTOAjax.web.servlet.accessoEffettuato.gestioneTavoli.eliminazioneTavolo;
 
 import java.io.IOException;
 import java.util.Set;
@@ -15,17 +15,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.builder.TavoloDTOBuilder;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.dto.TavoloDTO;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.service.TavoloService;
 
-@WebServlet("/accessoEffettuato/gestioneTavoli/ricerca/ExecuteRicercaTavoliServlet")
-public class ExecuteRicercaTavoliServlet extends HttpServlet {
+@WebServlet("/accessoEffettuato/gestioneTavoli/eliminazione/EliminazioneNonConfermataServlet")
+public class EliminazioneNonConfermataServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    public EliminazioneNonConfermataServlet() {
+        super();
+    }
     
-	@Autowired 
+    @Autowired 
 	private TavoloService tavoloService;
 	
 	
@@ -34,56 +37,40 @@ public class ExecuteRicercaTavoliServlet extends HttpServlet {
 		super.init(config);
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
-	
-	
-    public ExecuteRicercaTavoliServlet() {
-        super();
-    }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Recupero i campi immessi dallo user
-		TavoloDTO tavoloDTO=TavoloDTOBuilder.nuovoBuilder(request.getParameter("denominazione"))	
-			.dataCreazione(request.getParameter("dataCreazione"))
-			.esperienzaMinimaRichiesta(request.getParameter("esperienzaMinimaRichiesta"))
-			.puntataMinima(request.getParameter("puntataMinima")).build();
+		// Palleggio i risultati della ricerca
+		TavoloDTO criteriDiRicerca=new TavoloDTO();
+		criteriDiRicerca.ricostruisciCriteriDiRicercaDaDTO(request);
 		
-		// Li valido
-		if (tavoloDTO.errorRicerca().size()!=0) {
-			request.setAttribute("errorMessage",tavoloDTO.errorRicerca());
-			request.getServletContext().getRequestDispatcher("/jsp/gestioneTavoli/ricerca/ricercaTavoli.jsp")
-				.forward(request,response);
-			return;
-		}
-		
+		// Devo ricostruire i risultati della ricerca e tornare alla pagina a questi dedicata
 		// Costruisco il model
-		Tavolo tavoloDaCercare=tavoloDTO.buildModelFromDTO();
+		Tavolo tavoloDaCercare=criteriDiRicerca.buildModelFromDTO();
 
 		// Effettuo la ricerca
 		Set<Tavolo> tavoliTrovati=tavoloService.findByExample(tavoloDaCercare).stream()
-				.filter(tavolo->tavolo.getCreatore().getIdUtente()
-						==((Utente) request.getSession().getAttribute("utenteIdentificato")).getIdUtente())
-				.collect(Collectors.toSet());
-		
+			.filter(tavolo->tavolo.getCreatore().getIdUtente()
+				==((Utente) request.getSession().getAttribute("utenteIdentificato")).getIdUtente())
+			.collect(Collectors.toSet());
+				
 		// Converto i risultati in DTO
 		Set<TavoloDTO> tavoliTrovatiDTO=new TreeSet<>();
 		tavoliTrovati.stream().forEach(tavolo-> {
 			TavoloDTO tavoloDTOItem=new TavoloDTO();
 			tavoloDTOItem.buildDTOFromModel(tavolo);
 			tavoloDTOItem.setUsernameGiocatori(tavolo.getGiocatori()
-					.stream().map(giocatore->giocatore.getUsername()).collect(Collectors.toSet()));
+			.stream().map(giocatore->giocatore.getUsername()).collect(Collectors.toSet()));
 			tavoliTrovatiDTO.add(tavoloDTOItem);
 		});
 		
-		// Mando alla pagina dei risultati sia i tavoli trovati, sia i criteri della ricerca effettuata 
+		// Mando alla pagina dei risultati sia i tavoli trovati, sia i criteri della ricerca effettuata 	
 		request.setAttribute("listaTavoli",tavoliTrovatiDTO);
-		request.setAttribute("criteriDiRicerca",tavoloDTO);
-		request.setAttribute("successMessage","Ricerca effettuata con successo!");
+		request.setAttribute("criteriDiRicerca",criteriDiRicerca);
 		request.getServletContext().getRequestDispatcher("/jsp/gestioneTavoli/ricerca/risultatiRicercaTavoli.jsp")
 			.forward(request,response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }
