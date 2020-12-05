@@ -81,13 +81,13 @@ public class UtenteServiceImpl implements UtenteService {
 		if (StringUtils.isNotEmpty(example.getNome()))
 			query += " and u.nome like '%" + example.getNome() + "%' ";
 		if (StringUtils.isNotEmpty(example.getCognome()))
-			query += " and u.cognome = " + example.getCognome() + " ";
+			query += " and u.cognome like '%" + example.getCognome() + "%' ";
 		if (StringUtils.isNotEmpty(example.getUsername()))
-			query += " and u.username = " + example.getCognome() + " ";
+			query += " and u.username = '" + example.getUsername() + "' ";
 		if (StringUtils.isNotEmpty(example.getPassword()))
-			query += " and u.password = " + example.getPassword() + " ";
+			query += " and u.password = '" + example.getPassword() + "' ";
 		if (example.getDataRegistrazione()!=null) { 
-			query += " and u.dataRegistrazione = " + example.getDataRegistrazione() + " ";
+			query += " and u.dataRegistrazione = '" + example.getDataRegistrazione() + "' ";
 		}		
 		// Trovo più sensato cercare gli utenti con almeno un tot di esperienza
 		if(example.getEsperienzaAccumulata()!=null) {	

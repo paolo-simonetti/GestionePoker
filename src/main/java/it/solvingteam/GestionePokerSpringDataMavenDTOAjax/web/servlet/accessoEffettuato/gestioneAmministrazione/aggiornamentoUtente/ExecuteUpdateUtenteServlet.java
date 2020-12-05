@@ -106,132 +106,134 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 		// Altrimenti, viene preservato.
 		switch(utenteService.caricaSingoloUtente(Long.parseLong(request.getParameter("idUtenteDaAggiornare")))
 				.getStatoUtente().toString()) {
-				case "creato": 
-					utenteDTO.setStatoUtente("attivo");
-					// Quando attivo l'utente, imposto anche i ruoli
-					if(request.getParameterValues("selectRuoli")!=null&&
-							request.getParameterValues("selectRuoli").length!=0) {
-						// Impostare i ruoli vuol dire settarli anche all'utenteDTO da cui poi voglio ricostruire il model
-						Arrays.asList(request.getParameterValues("selectRuoli")).stream()
-							.forEach(descrizioneRuolo-> {
-								RuoloUtenteDTO ruoloUtenteDTO=new RuoloUtenteDTO();
-								ruoloUtenteDTO.setDescrizioneRuolo(descrizioneRuolo); 
-								ruoliUtenteDTO.add(ruoloUtenteDTO);});
-						ruoliUtenteDTO.stream().forEach(ruoloDTO->ruoli.add(ruoloUtenteService
-								.trovaTramiteNomeRuoloConUtenti(NomeRuolo.conversioneNomeRuolo
-										.get(ruoloDTO.getDescrizioneRuolo()))));
+			case "creato": 
+				utenteDTO.setStatoUtente("attivo");
+				// Quando attivo l'utente, imposto anche i ruoli
+				if(request.getParameterValues("selectRuoli")!=null&&
+					request.getParameterValues("selectRuoli").length!=0) {
+					// Impostare i ruoli vuol dire settarli anche all'utenteDTO da cui poi voglio ricostruire il model
+					Arrays.asList(request.getParameterValues("selectRuoli")).stream()
+						.forEach(descrizioneRuolo-> {
+						RuoloUtenteDTO ruoloUtenteDTO=new RuoloUtenteDTO();
+						ruoloUtenteDTO.setDescrizioneRuolo(descrizioneRuolo); 
+						ruoliUtenteDTO.add(ruoloUtenteDTO);});
+					ruoliUtenteDTO.stream().forEach(ruoloDTO->ruoli.add(ruoloUtenteService
+						.trovaTramiteNomeRuoloConUtenti(NomeRuolo.conversioneNomeRuolo
+								.get(ruoloDTO.getDescrizioneRuolo()))));
 					}
 					
-					break;
+				break;
 						
-				case "attivo":
-					// In questo caso, voglio che i ruoli siano preservati
-					utenteService.trovaTramiteIdConRuoli(Long.parseLong(request.getParameter("idUtenteDaAggiornare")))
-						.getRuoli().stream().forEach(ruolo-> { 
-							ruoli.add(ruolo);
-							// Preservare i ruoli vuol dire settarli anche all'utenteDTO da cui poi voglio ricostruire il model
-							RuoloUtenteDTO ruoloUtenteDTO=new RuoloUtenteDTO();
-							ruoloUtenteDTO.setDescrizioneRuolo(ruolo.getDescrizioneRuolo());
-							ruoliUtenteDTO.add(ruoloUtenteDTO);
-						});
-					utenteDTO.setStatoUtente("attivo");
-					break;
-							
-				case "disabilitato":
-					utenteDTO.setStatoUtente("disabilitato");
-					// Non serve che dica nulla sui ruoli: se lo stato è disabilitato, l'utente non ha ruoli
-					break;
-						
-				default: 
-					request.getSession().invalidate();
-					request.setAttribute("errorMessage","Hai provato a manomettere gli stati dell'utente?");
-					request.getServletContext().getRequestDispatcher("/jsp/generali/welcome.jsp")
-						.forward(request,response);
-			}
-		// Creo l'utente aggiornato a partire dai dati immessi
-				Utente utenteAggiornato=utenteDTO.buildModelFromDTO();
-				
-				// Se l'utente ha selezionato tavoli nel campo Tavoli creati, ne valido gli id e li recupero dal db
-				TavoloDTO tavoloDTO=new TavoloDTO();
-				Set<String> erroriNegliId=new TreeSet<>();
-				Set<Tavolo> tavoliSelezionati=new TreeSet<>();
-				if(request.getParameterValues("selectTavoli")!=null &&
-						request.getParameterValues("selectTavoli").length!=0) {
-					// valido gli id
-					erroriNegliId=Arrays.asList(request.getParameterValues("selectTavoli")).stream()
-							.map(stringaId->tavoloDTO.errorId(stringaId))
-								.filter(stringaErrore->!StringUtils.isBlank(stringaErrore)).collect(Collectors.toSet());
-					if(erroriNegliId.size()!=0) {
-						request.getSession().invalidate();
-						request.setAttribute("errorMessage", erroriNegliId);
-						request.getServletContext().getRequestDispatcher("/jsp/generali/menu.jsp").forward(request,response);
-					}
-					// se sono qui, gli id sono validi, quindi recupero i tavoli dal db e li metto in tavoliSelezionati
-					Arrays.asList(request.getParameterValues("selectTavoli")).stream()
-						.forEach(stringaId->tavoliSelezionati.add(tavoloService
-							.trovaTramiteIdConCreatore(Long.parseLong(stringaId))));
-				}
-				
-				// Se l'utente ha selezionato un tavolo nel campo Tavolo di gioco, ne valido l'id e lo recupero dal db
-				Tavolo tavoloDiGioco=null;
-				if(!StringUtils.isBlank(request.getParameter("tavoloDiGioco")))  {
-					if (tavoloDTO.errorId(request.getParameter("tavoloDiGioco"))!=null) {
-						request.getSession().invalidate();
-						request.setAttribute("errorMessage", erroriNegliId);
-						request.getServletContext().getRequestDispatcher("/jsp/generali/menu.jsp").forward(request,response);
-					}
-					// Se sono qui, l'id è valido e recupero il tavolo dal db
-					tavoloDiGioco=tavoloService.trovaTramiteIdConGiocatori(
-							Long.parseLong(request.getParameter("tavoloDiGioco")));	
-				}
-				
-				/* Ora che ho recuperato e validato tutto, procedo con l'aggiornamento
-				 Imposto l'utente aggiornato come creatore dei tavoliSelezionati. Se non ho selezionato tavoli,
-				 considero che l'admin voglia che lo user sia sganciato da ogni tavolo
-				 */
-				utenteAggiornato.setTavoliCreati(tavoliSelezionati);
-				if(tavoliSelezionati!=null && tavoliSelezionati.size()!=0) {
-					tavoliSelezionati.stream().forEach(tavolo->tavolo.setCreatore(utenteAggiornato));			
-				}
-				
-				// Imposto l'utente aggiornato come giocatore al tavoloDiGioco, con la stessa considerazione di prima
-				utenteAggiornato.setTavoloDiGioco(tavoloDiGioco);
-				if(tavoloDiGioco!=null) {
-					tavoloDiGioco.addToGiocatori(utenteAggiornato);
-				}
-				
-				// Se l'admin ha immesso dei ruoli e uno stato, li metto nell'utente
-				if(ruoliUtenteDTO!=null&&ruoliUtenteDTO.size()!=0) {
-					utenteAggiornato.setRuoli(ruoli);
-					ruoli.stream().forEach(ruolo-> {
-						ruolo=ruoloUtenteService.trovaTramiteNomeRuoloConUtenti(ruolo.getNomeRuolo());
-						ruolo.addToUtenti(utenteAggiornato);
+			case "attivo":
+				// In questo caso, voglio che i ruoli siano preservati
+				utenteService.trovaTramiteIdConRuoli(Long.parseLong(request.getParameter("idUtenteDaAggiornare")))
+					.getRuoli().stream().forEach(ruolo-> { 
+						ruoli.add(ruolo);
+						// Preservare i ruoli vuol dire settarli anche all'utenteDTO da cui poi voglio ricostruire il model
+						RuoloUtenteDTO ruoloUtenteDTO=new RuoloUtenteDTO();
+						ruoloUtenteDTO.setDescrizioneRuolo(ruolo.getDescrizioneRuolo());
+						ruoliUtenteDTO.add(ruoloUtenteDTO);
 					});
-				}
-
-				if(!StringUtils.isBlank(utenteDTO.getStatoUtente())) {
-					utenteAggiornato.setStatoUtente(StatoUtente.conversioneStatoUtente.get(utenteDTO.getStatoUtente()));
-				}
-				
-				// Ora posso fare l'update dell'utente
-				utenteService.aggiorna(utenteAggiornato);
-				
-				// Aggiorno l'utente in sessione, se è lo stesso che ho aggiornato
-				if(utenteAggiornato.getIdUtente()==((Utente) request.getSession().getAttribute("utenteIdentificato")).getIdUtente()) {
-					request.getSession().setAttribute("utenteIdentificato",utenteAggiornato);					
-				}
-				
-				// Recupero i risultati della ricerca originaria e torno alla pagina dei risultati della ricerca
-				Set<Utente> utentiRisultantiDaRicerca=Arrays.asList(stringaIdRisultatiRicerca).stream()
-					.map(stringaId->utenteService.caricaSingoloUtente(Long.parseLong(stringaId)))
-						.collect(Collectors.toSet());
-				request.setAttribute("listaUtenti",utentiRisultantiDaRicerca);
-				request.setAttribute("risultatoRicercaUtentePerGet",utenteDTO.generaRisultatoRicercaPerGet(utentiRisultantiDaRicerca)); 
-				request.getServletContext().getRequestDispatcher("/jsp/gestioneAmministrazione/ricerca/risultatiRicercaUtenti.jsp")
+				utenteDTO.setStatoUtente("attivo");
+				break;
+						
+			case "disabilitato":
+				utenteDTO.setStatoUtente("disabilitato");
+				// Non serve che dica nulla sui ruoli: se lo stato è disabilitato, l'utente non ha ruoli
+				break;
+						
+			default: 
+				request.getSession().invalidate();
+				request.setAttribute("errorMessage","Hai provato a manomettere gli stati dell'utente?");
+				request.getServletContext().getRequestDispatcher("/jsp/generali/welcome.jsp")
 					.forward(request,response);
-				 
+		}
+		// Creo l'utente aggiornato a partire dai dati immessi
+		Utente utenteAggiornato=utenteDTO.buildModelFromDTO();
+		// Recupero la password presente nel db
+		utenteAggiornato.setPassword(utenteService.caricaSingoloUtente(Long.parseLong(request.getParameter("idUtenteDaAggiornare"))).getPassword());
+		// Se l'utente ha selezionato tavoli nel campo Tavoli creati, ne valido gli id e li recupero dal db
+		TavoloDTO tavoloDTO=new TavoloDTO();
+		Set<String> erroriNegliId=new TreeSet<>();
+		Set<Tavolo> tavoliSelezionati=new TreeSet<>();
+		if(request.getParameterValues("selectTavoli")!=null &&
+			request.getParameterValues("selectTavoli").length!=0) {
+			// valido gli id
+			erroriNegliId=Arrays.asList(request.getParameterValues("selectTavoli")).stream()
+				.map(stringaId->tavoloDTO.errorId(stringaId))
+				.filter(stringaErrore->!StringUtils.isBlank(stringaErrore)).collect(Collectors.toSet());
+			if(erroriNegliId.size()!=0) {
+				request.getSession().invalidate();
+				request.setAttribute("errorMessage", erroriNegliId);
+				request.getServletContext().getRequestDispatcher("/jsp/generali/menu.jsp").forward(request,response);
+			}
+			
+			// se sono qui, gli id sono validi, quindi recupero i tavoli dal db e li metto in tavoliSelezionati
+			Arrays.asList(request.getParameterValues("selectTavoli")).stream()
+				.forEach(stringaId->tavoliSelezionati.add(tavoloService
+				.trovaTramiteIdConCreatore(Long.parseLong(stringaId))));
+			}
+				
+			// Se l'utente ha selezionato un tavolo nel campo Tavolo di gioco, ne valido l'id e lo recupero dal db
+			Tavolo tavoloDiGioco=null;
+			if(!StringUtils.isBlank(request.getParameter("tavoloDiGioco")))  {
+				if (tavoloDTO.errorId(request.getParameter("tavoloDiGioco"))!=null) {
+					request.getSession().invalidate();
+					request.setAttribute("errorMessage", erroriNegliId);
+					request.getServletContext().getRequestDispatcher("/jsp/generali/menu.jsp").forward(request,response);
+				}
+				// Se sono qui, l'id è valido e recupero il tavolo dal db
+				tavoloDiGioco=tavoloService.trovaTramiteIdConGiocatori(
+					Long.parseLong(request.getParameter("tavoloDiGioco")));	
+			}
+				
+			/* Ora che ho recuperato e validato tutto, procedo con l'aggiornamento
+			 Imposto l'utente aggiornato come creatore dei tavoliSelezionati. Se non ho selezionato tavoli,
+			 considero che l'admin voglia che lo user sia sganciato da ogni tavolo
+		    */
+			utenteAggiornato.setTavoliCreati(tavoliSelezionati);
+			if(tavoliSelezionati!=null && tavoliSelezionati.size()!=0) {
+				tavoliSelezionati.stream().forEach(tavolo->tavolo.setCreatore(utenteAggiornato));			
+			}
+				
+			// Imposto l'utente aggiornato come giocatore al tavoloDiGioco, con la stessa considerazione di prima
+			utenteAggiornato.setTavoloDiGioco(tavoloDiGioco);
+			if(tavoloDiGioco!=null) {
+				tavoloDiGioco.addToGiocatori(utenteAggiornato);
+			}
+				
+			// Se l'admin ha immesso dei ruoli e uno stato, li metto nell'utente
+			if(ruoliUtenteDTO!=null&&ruoliUtenteDTO.size()!=0) {
+				utenteAggiornato.setRuoli(ruoli);
+				ruoli.stream().forEach(ruolo-> {
+					ruolo=ruoloUtenteService.trovaTramiteNomeRuoloConUtenti(ruolo.getNomeRuolo());
+					ruolo.addToUtenti(utenteAggiornato);
+				});
 			}
 
+			if(!StringUtils.isBlank(utenteDTO.getStatoUtente())) {
+				utenteAggiornato.setStatoUtente(StatoUtente.conversioneStatoUtente.get(utenteDTO.getStatoUtente()));
+			}
+				
+			// Ora posso fare l'update dell'utente
+			utenteService.aggiorna(utenteAggiornato);
+				
+			// Aggiorno l'utente in sessione, se è lo stesso che ho aggiornato
+			if(utenteAggiornato.getIdUtente()==((Utente) request.getSession().getAttribute("utenteIdentificato")).getIdUtente()) {
+				request.getSession().setAttribute("utenteIdentificato",utenteAggiornato);					
+			}
+				
+			// Recupero i risultati della ricerca originaria e torno alla pagina dei risultati della ricerca
+			Set<Utente> utentiRisultantiDaRicerca=Arrays.asList(stringaIdRisultatiRicerca).stream()
+				.map(stringaId->utenteService.caricaSingoloUtente(Long.parseLong(stringaId)))
+				.collect(Collectors.toSet());
+			request.setAttribute("listaUtenti",utentiRisultantiDaRicerca);
+			request.setAttribute("risultatoRicercaUtentePerGet",utenteDTO.generaRisultatoRicercaPerGet(utentiRisultantiDaRicerca)); 
+			request.getServletContext().getRequestDispatcher("/jsp/gestioneAmministrazione/ricerca/risultatiRicercaUtenti.jsp")
+				.forward(request,response);
+				 
 		}
+
+	}
 
 		

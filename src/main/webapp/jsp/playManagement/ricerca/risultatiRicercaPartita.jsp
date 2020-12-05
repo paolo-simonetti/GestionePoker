@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Risultati della ricerca del tavolo</title>
+	<title>Risultati della ricerca della partita</title>
 	
 	 <jsp:include page="/jsp/generali/header.jsp" />
     
@@ -51,6 +51,12 @@
 		    <div class='card-header'>
 		        <h5>Lista dei risultati</h5> 
 		    </div>
+		    <div class='card-body'>
+		    
+		    <a class="btn  btn-sm btn-outline-danger" 
+			  href="${pageContext.request.contextPath}/accessoEffettuato/playManagement/ricerca/TornaAlFormServlet"
+			> Torna al form di ricerca</a>
+			
 		    	<div class='table-responsive'>
 		            <table class='table table-striped ' >
 		                <thead>
@@ -60,6 +66,8 @@
 		                        <th>Data creazione</th>
 		                        <th>Esperienza minima richiesta</th>
 								<th>Puntata minima</th>
+								<th>Creatore</th>
+								<th>Giocatori</th>
 		                        <th>Azioni</th>
 		                    </tr>
 		                </thead>
@@ -71,20 +79,18 @@
 		                        <td><c:out value="${item.dataCreazione}"></c:out></td>
 		                        <td><c:out value="${item.esperienzaMinimaRichiesta}"></c:out></td>
 		                        <td><c:out value="${item.puntataMinima}"></c:out></td>
-		                    
+		                    	<td><c:out value="${item.usernameCreatore}"></c:out></td>
+		                    	<td>
+		                    	  <c:forEach items="${item.usernameGiocatori}" var="usernameGiocatore">
+		                    	    <c:out value="${usernameGiocatore} "></c:out>
+		                    	  </c:forEach>
+		                    	</td>
 	               				<td>
-								  <a class="btn  btn-sm btn-outline-secondary" 
-								  	href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/visualizzazioneTavolo/VisualizzazioneTavoloServlet${requestScope.criteriDiRicerca}idTavoloDaVisualizzare=${item.idTavolo}">
-									Visualizza tavolo
-								  </a>
-								  <c:if test="${item.usernameGiocatori.size()==0}">
-								  <a class="btn  btn-sm btn-outline-primary ml-2 mr-2" 
-								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/aggiornamentoTavolo/PrepareUpdateTavoloServlet${requestScope.criteriDiRicerca}idTavoloDaAggiornare=${item.idTavolo}">
-								    Aggiorna tavolo
-								  </a>
-								  <a class="btn  btn-sm btn-outline-danger ml-2 mr-2" 
-								    href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/eliminazioneTavolo/PrepareDeleteTavoloServlet${requestScope.criteriDiRicerca}idTavoloDaEliminare=${item.idTavolo}">
-								    Elimina tavolo
+	               				  <c:if test="${sessionScope.utenteIdentificato.esperienzaAccumulata>=item.esperienzaMinimaRichiesta and 
+	               				    sessionScope.utenteIdentificato.creditoDisponibile>=item.puntataMinima }">
+								  <a class="btn  btn-sm btn-outline-primary" 
+								  	href="${pageContext.request.contextPath}/accessoEffettuato/playManagement/partita/UniscitiAllaPartitaServlet">
+									Unisciti alla partita!
 								  </a>
 								  </c:if>
 								
@@ -95,7 +101,8 @@
 		            </table>
 		        </div>
 		   
-			<!-- end card-body -->			   
+			<!-- end card-body -->
+			</div>			   
 		    </div>
 			
 	

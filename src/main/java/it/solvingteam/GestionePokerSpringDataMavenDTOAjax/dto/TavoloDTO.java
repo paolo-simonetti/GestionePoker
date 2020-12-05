@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Tavolo;
+import it.solvingteam.GestionePokerSpringDataMavenDTOAjax.model.Utente;
 
 public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Serializable {	
 
@@ -246,8 +247,103 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 
 		}
 		
+		if(!StringUtils.isBlank(this.usernameCreatore)) {
+			if(this.usernameCreatore.trim().split("\\s+").length>1) {
+				result.add("Gli username dei creatori non hanno whitespaces");
+			}
+
+			if(this.usernameCreatore.trim().split("-").length>1) {
+				result.add("Gli username dei creatori non hanno trattini '-'");
+			}
+
+		}
 		
+		if(this.usernameGiocatori!=null && this.usernameGiocatori.size()>0) {
+			String usernameNonValido=usernameGiocatori.stream().filter( usernameGiocatore-> (usernameGiocatore.trim().split("\\s+").length>1) 
+					|| (usernameGiocatore.trim().split("-").length>1)).findFirst().orElse(null);
+			if(usernameNonValido!=null) {
+				result.add(usernameNonValido+" non è uno username valido: gli username non hanno né whitespaces, né trattini '-'");				
+			}
+		}
+	
+		return result;
+	}
+	
+	public Set<String> errorRicercaPartita(HttpServletRequest request) {
+		Set<String> result=new TreeSet<>();
+		if(!StringUtils.isBlank(this.dataCreazione)) {
+			try {
+				LocalDate.parse(this.dataCreazione);
+			} catch(DateTimeParseException e) {
+				e.printStackTrace();
+				result.add("Data inserita non valida!");
+			}
+			
+			//Devo mettere questi controlli sugli spazi, per non far scoppiare il palleggio dei parametri di ricerca in get
+			if(dataCreazione.trim().split("\\s+").length>1) {
+				result.add("Nella data di creazione non possono essere presenti spazi");
+			}
+		}
 		
+		if (!StringUtils.isBlank(this.esperienzaMinimaRichiesta)) {
+			try {
+				Integer.parseInt(this.esperienzaMinimaRichiesta);
+				if(Integer.parseInt(this.esperienzaMinimaRichiesta)<0) {
+					result.add("L'esperienza minima richiesta non può essere negativa");
+				} else if(Integer.parseInt(this.esperienzaMinimaRichiesta)>((Utente) request.getSession()
+						.getAttribute("utenteIdentificato")).getEsperienzaAccumulata()) {
+					result.add("Non hai accumulato abbastanza esperienza per giocare a una partita del genere");
+				}
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("L'esperienza minimaRichiesta è un numero intero!");
+			}
+
+			if(esperienzaMinimaRichiesta.trim().split("\\s+").length>1) {
+				result.add("Nell'esperienza minima richiesta non possono essere presenti spazi");
+			}
+
+		}
+		
+		if (!StringUtils.isBlank(this.puntataMinima)) {
+			try {
+				Integer.parseInt(this.puntataMinima);
+				if(Integer.parseInt(this.puntataMinima)<0) {
+					result.add("La puntata minima non può essere negativa");
+				} else if(Integer.parseInt(this.puntataMinima)>((Utente) request.getSession()
+						.getAttribute("utenteIdentificato")).getCreditoDisponibile()) {
+					result.add("Non hai credito a sufficienza per giocare a una partita del genere");
+				}
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result.add("La puntata minima è un numero intero!");
+			}
+
+			if(puntataMinima.trim().split("\\s+").length>1) {
+				result.add("Nella puntata minima non possono essere presenti spazi");
+			}
+
+		}
+		
+		if(!StringUtils.isBlank(this.usernameCreatore)) {
+			if(this.usernameCreatore.trim().split("\\s+").length>1) {
+				result.add("Gli username dei creatori non hanno whitespaces");
+			}
+
+			if(this.usernameCreatore.trim().split("-").length>1) {
+				result.add("Gli username dei creatori non hanno trattini '-'");
+			}
+
+		}
+		
+		if(this.usernameGiocatori!=null && this.usernameGiocatori.size()>0) {
+			String usernameNonValido=usernameGiocatori.stream().filter( usernameGiocatore-> (usernameGiocatore.trim().split("\\s+").length>1) 
+					|| (usernameGiocatore.trim().split("-").length>1)).findFirst().orElse(null);
+			if(usernameNonValido!=null) {
+				result.add(usernameNonValido+" non è uno username valido: gli username non hanno né whitespaces, né trattini '-'");				
+			}
+		}
+	
 		return result;
 	}
 
