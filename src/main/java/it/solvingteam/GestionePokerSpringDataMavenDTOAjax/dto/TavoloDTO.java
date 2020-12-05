@@ -106,6 +106,9 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 		} else {
 			try {
 				Integer.parseInt(this.esperienzaMinimaRichiesta);
+				if(Integer.parseInt(this.esperienzaMinimaRichiesta)<0) {
+					result.add("L'esperienza minima richiesta non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("Il campo Esperienza minima richiesta deve essere un numero. Hai provato a cambiarne il tipo di input?");
@@ -117,6 +120,9 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 		} else {
 			try {
 				Integer.parseInt(puntataMinima);
+				if(Integer.parseInt(this.puntataMinima)<0) {
+					result.add("La puntata minima non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("Il campo Puntata minima richiesta deve essere un numero. Hai provato a cambiarne il tipo di input?");
@@ -164,6 +170,9 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 		} else {
 			try {
 				Integer.parseInt(this.esperienzaMinimaRichiesta);
+				if(Integer.parseInt(this.esperienzaMinimaRichiesta)<0) {
+					result.add("L'esperienza minima richiesta non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("Il campo Esperienza minima richiesta deve essere un numero. Hai provato a cambiarne il tipo di input?");
@@ -175,6 +184,9 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 		} else {
 			try {
 				Integer.parseInt(puntataMinima);
+				if(Integer.parseInt(this.puntataMinima)<0) {
+					result.add("La puntata minima non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("Il campo Puntata minima richiesta deve essere un numero. Hai provato a cambiarne il tipo di input?");
@@ -203,6 +215,9 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 		if (!StringUtils.isBlank(this.esperienzaMinimaRichiesta)) {
 			try {
 				Integer.parseInt(this.esperienzaMinimaRichiesta);
+				if(Integer.parseInt(this.esperienzaMinimaRichiesta)<0) {
+					result.add("L'esperienza minima richiesta non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("L'esperienza minimaRichiesta è un numero intero!");
@@ -217,6 +232,9 @@ public class TavoloDTO implements AbstractDTO<Tavolo>, Comparable<TavoloDTO>, Se
 		if (!StringUtils.isBlank(this.puntataMinima)) {
 			try {
 				Integer.parseInt(this.puntataMinima);
+				if(Integer.parseInt(this.puntataMinima)<0) {
+					result.add("La puntata minima non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("La puntata minima è un numero intero!");

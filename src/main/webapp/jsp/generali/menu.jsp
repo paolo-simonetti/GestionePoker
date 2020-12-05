@@ -52,6 +52,12 @@
 	      	  href="${pageContext.request.contextPath}/accessoEffettuato/gestioneTavoli/SchermataGeneraleGestioneTavoliServlet" role="button">
 	      	    Vai alla gestione dei tavoli &raquo;</a></p>
 	      </c:if>
+	      
+	      <c:if test="${sessionScope.isAdmin eq 'true' or sessionScope.isSpecialPlayer eq 'true' or sessionScope.isPlayer eq 'true'}">
+	        <p><a class="btn btn-primary btn-lg" 
+	      	  href="${pageContext.request.contextPath}/accessoEffettuato/playManagement/SchermataGeneralePlayManagementServlet" role="button">
+	      	    Vai al play management &raquo;</a></p>
+	      </c:if>
 	    </div>
 	  </div>
 	  

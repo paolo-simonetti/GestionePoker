@@ -136,6 +136,9 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		if (!StringUtils.isBlank(this.esperienzaAccumulata)) {
 			try {
 				Integer.parseInt(this.esperienzaAccumulata);
+				if(Integer.parseInt(this.esperienzaAccumulata)<0) {
+					result.add("L'esperienza accumulata non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("L'esperienza accumulata è un numero intero!");
@@ -145,6 +148,9 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		if (!StringUtils.isBlank(this.creditoDisponibile)) {
 			try {
 				Integer.parseInt(this.creditoDisponibile);
+				if(Integer.parseInt(this.creditoDisponibile)<0) {
+					result.add("Il credito disponibile non può essere negativo");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("Il credito disponibile è un numero intero!");
@@ -198,6 +204,9 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		if (!StringUtils.isBlank(this.esperienzaAccumulata)) {
 			try {
 				Integer.parseInt(this.esperienzaAccumulata);
+				if(Integer.parseInt(this.esperienzaAccumulata)<0) {
+					result.add("L'esperienza accumulata non può essere negativa");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("L'esperienza accumulata è un numero intero!");
@@ -207,6 +216,9 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		if (!StringUtils.isBlank(this.creditoDisponibile)) {
 			try {
 				Integer.parseInt(this.creditoDisponibile);
+				if(Integer.parseInt(this.creditoDisponibile)<0) {
+					result.add("Il credito disponibile non può essere negativo");
+				}
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 				result.add("Il credito disponibile è un numero intero!");
@@ -233,6 +245,24 @@ public class UtenteDTO implements AbstractDTO<Utente> {
 		
 		return result;
 	}
+	
+	public String errorCompraCredito(String creditoDesiderato) {
+		String result=null;
+		if(StringUtils.isBlank(creditoDesiderato)) {
+			result="Inserisci un numero positivo valido";
+		}  else {
+			try {
+				Integer.parseInt(creditoDesiderato);
+				if(Integer.parseInt(creditoDesiderato)<=0) {
+					result="Il credito desiderato deve essere un numero positivo";
+				}
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
+				result ="Credito inserito non valido";
+			}
+		}
+		
+		return result;	}
 
 	public String generaRisultatoRicercaPerGet(Set<Utente> risultatoRicercaUtenti) {
 		String result="";
