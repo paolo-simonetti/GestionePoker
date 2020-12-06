@@ -18,6 +18,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdown03">
           	<a class="dropdown-item" href="${pageContext.request.contextPath}/registrazioneAccesso/LogoutServlet">Logout</a>
+          	<a class="dropdown-item" href="${pageContext.request.contextPath}/accessoEffettuato/datiPersonali/VisualizzaDatiPersonaliServlet">Dati personali</a>
           </div>
           </li>
 	      
