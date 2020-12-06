@@ -68,7 +68,7 @@ public class TavoloServiceImpl implements TavoloService {
 		if (StringUtils.isNotEmpty(example.getDenominazione()))
 			query += " and t.denominazione like '%" + example.getDenominazione() + "%' ";
 		if (example.getDataCreazione()!=null)
-			query += " and t.dataCreazione = " + example.getDataCreazione() + " ";
+			query += " and t.dataCreazione = '" + example.getDataCreazione() + "' ";
 		if (example.getEsperienzaMinimaRichiesta() != null && example.getEsperienzaMinimaRichiesta()>= 0)
 			query += " and t.esperienzaMinimaRichiesta >= " + example.getEsperienzaMinimaRichiesta();
 		if (example.getPuntataMinima() != null && example.getPuntataMinima()> 0)

@@ -89,7 +89,7 @@
 	               				  <c:if test="${sessionScope.utenteIdentificato.esperienzaAccumulata>=item.esperienzaMinimaRichiesta and 
 	               				    sessionScope.utenteIdentificato.creditoDisponibile>=item.puntataMinima }">
 								  <a class="btn  btn-sm btn-outline-primary" 
-								  	href="${pageContext.request.contextPath}/accessoEffettuato/playManagement/partita/UniscitiAllaPartitaServlet">
+								  	href="${pageContext.request.contextPath}/accessoEffettuato/playManagement/partita/UniscitiAllaPartitaServlet?idTavoloDiGioco=${item.idTavolo}">
 									Unisciti alla partita!
 								  </a>
 								  </c:if>

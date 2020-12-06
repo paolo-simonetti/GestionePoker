@@ -165,7 +165,7 @@ public class Tavolo implements Comparable<Tavolo> {
 	public String toString() {
 		return "Tavolo [idTavolo=" + idTavolo + ", denominazione=" + denominazione + ", dataCreazione=" + dataCreazione
 				+ ", esperienzaMinimaRichiesta=" + esperienzaMinimaRichiesta + ", puntataMinima=" + puntataMinima
-				+ ", creatore=" + creatore + "]";
+				+ ", creatore=" + creatore.getUsername() + "]";
 	}
 
 	@Override
